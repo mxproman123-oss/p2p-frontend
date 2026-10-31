@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="am">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Admin</title>
+<link rel="stylesheet" href="style.css">
+<script src="config.js"></script>
+</head>
+<body>
+
+<form id="login" class="login">
+  <h1>Admin</h1>
+  <div class="field"><label for="pw">Password</label><input id="pw" type="password" required></div>
+  <button class="btn block" type="submit">ግባ</button>
+</form>
+
+<div id="app" class="wrap hide">
+  <header class="bar">
+    <div class="logo"><span class="stamp">ብ</span>Admin</div>
+    <button class="btn sec sm" id="out">ውጣ</button>
+  </header>
+
+  <div class="stats">
+    <div><b id="stP">0</b><span>በመጠበቅ ላይ</span></div>
+    <div><b id="stPd">0</b><span>ማስረጃ የተላከ (ለማረጋገጥ)</span></div>
+    <div><b id="stC">0</b><span>የተጠናቀቁ</span></div>
+    <div><b id="stV">0</b><span>ጠቅላላ USD</span></div>
+  </div>
+
+  <div class="tabs" role="group">
+    <button class="chip" data-f="paid" aria-pressed="true">ለማረጋገጥ</button>
+    <button class="chip" data-f="pending" aria-pressed="false">በመጠበቅ ላይ</button>
+    <button class="chip" data-f="completed" aria-pressed="false">የተጠናቀቁ</button>
+    <button class="chip" data-f="rejected" aria-pressed="false">ውድቅ</button>
+    <button class="chip" data-f="all" aria-pressed="false">ሁሉም</button>
+    <button class="chip" data-f="settings" aria-pressed="false">ቅንብሮች</button>
+  </div>
+
+  <div id="ords" class="ords"></div>
+
+  <form id="settings" class="setgrid hide"></form>
+</div>
+
+<div id="modal" class="modal hide"><img id="mimg" alt="ማስረጃ"></div>
+
+<script>
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const fmt = n => Number(n).toLocaleString('en-US', { maximumFractionDigits: 2 });
+const STATE = { pending: 'በመጠበቅ ላይ', paid: 'ለማረጋገጥ', completed: 'ተጠናቀቀ', rejected: 'ውድቅ', cancelled: 'ተሰርዟል' };
+const FIELDS = [
+  ['buy_rate', 'USD ሲገዙ ዋጋ (ብር)', 'number'], ['sell_rate', 'USD ሲሸጡ ዋጋ (ብር)', 'number'],
+  ['min_usd', 'ዝቅተኛ USD', 'number'], ['max_usd', 'ከፍተኛ USD', 'number'],
+  ['binance_uid', 'የእርስዎ Binance UID', 'text'], ['bybit_uid', 'የእርስዎ Bybit UID', 'text'],
+  ['telebirr', 'Telebirr ቁጥር እና ስም', 'text'], ['cbe', 'CBE አካውንት እና ስም', 'text'],
+  ['telegram', 'Telegram link (ድጋፍ)', 'text'], ['announcement', 'ማስታወቂያ (ባዶ ከሆነ አይታይም)', 'text'],
+];
+let token = sessionStorage.getItem('p2p_admin') || '', filter = 'paid', orders = [], poll = null;
+
+function toast(m) { const t = document.createElement('div'); t.className = 'toast'; t.textContent = m; document.body.appendChild(t); setTimeout(() => t.remove(), 3000); }
+async function api(path, opts = {}) {
+  const r = await fetch(window.API_URL + path, { ...opts, headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token } });
+  const d = await r.json().catch(() => ({}));
+  if (r.status === 401 && token) { logout(); throw new Error('ድጋሚ ግባ።'); }
+  if (!r.ok) throw new Error(d.error || 'ስህተት ተፈጥሯል።');
+  return d;
+}
+function logout() { token = ''; sessionStorage.removeItem('p2p_admin'); clearInterval(poll); $('#app').classList.add('hide'); $('#login').classList.remove('hide'); }
+function enter() { $('#login').classList.add('hide'); $('#app').classList.remove('hide'); load(); loadSettings(); clearInterval(poll); poll = setInterval(load, 20000); }
+
+$('#login').onsubmit = async e => {
+  e.preventDefault();
+  try {
+    const d = await api('/api/admin/login', { method: 'POST', body: JSON.stringify({ password: $('#pw').value }) });
+    token = d.token; sessionStorage.setItem('p2p_admin', token); $('#pw').value = ''; enter();
+  } catch (err) { toast(err.message); }
+};
+$('#out').onclick = logout;
+
+async function load() {
+  try {
+    const d = await api('/api/admin/orders'); orders = d.orders;
+    $('#stP').textContent = d.stats.pending; $('#stPd').textContent = d.stats.paid;
+    $('#stC').textContent = d.stats.completed; $('#stV').textContent = fmt(d.stats.volume_usd);
+    render();
+  } catch (e) { if (token) toast(e.message); }
+}
+
+function render() {
+  const box = $('#ords');
+  if (filter === 'settings') { box.classList.add('hide'); $('#settings').classList.remove('hide'); return; }
+  box.classList.remove('hide'); $('#settings').classList.add('hide');
+  const list = filter === 'all' ? orders : orders.filter(o => o.status === filter);
+  if (!list.length) { box.innerHTML = '<p class="empty">በዚህ ምድብ ትዕዛዝ የለም።</p>'; return; }
+  box.innerHTML = list.map(o => `
+    <article class="ord" data-id="${esc(o.id)}">
+      <div class="top"><b>${esc(o.id)}</b><span class="state ${esc(o.status)}">${esc(STATE[o.status] || o.status)}</span></div>
+      <div>
+        <div class="kv"><span>አይነት</span><b>${o.side === 'buy' ? 'ደንበኛ USD ይገዛል' : 'ደንበኛ USD ይሸጣል'} • ${esc(o.platform)}</b></div>
+        <div class="kv"><span>መጠን</span><b>${fmt(o.usd)} USD × ${fmt(o.rate)} = ${fmt(o.etb)} ብር</b></div>
+        <div class="kv"><span>UID</span><b>${esc(o.user_uid)}</b></div>
+        <div class="kv"><span>${esc(o.pay_method)}</span><b>${esc(o.pay_account)}</b></div>
+        <div class="kv"><span>እውቂያ</span><b>${esc(o.contact)}</b></div>
+        <div class="kv"><span>ሰዓት</span><b>${esc(new Date(o.created + 'Z').toLocaleString())}</b></div>
+      </div>
+      <div class="field"><input class="note" placeholder="ለደንበኛው መልእክት (አማራጭ)" value="${esc(o.note)}"></div>
+      <div class="acts">
+        ${o.has_proof ? '<button class="btn sec sm" data-a="proof">ማስረጃ እይ</button>' : ''}
+        <button class="btn ok sm" data-a="completed">ተጠናቀቀ</button>
+        <button class="btn bad sm" data-a="rejected">ውድቅ</button>
+        <button class="btn sec sm" data-a="note">መልእክት አስቀምጥ</button>
+      </div>
+    </article>`).join('');
+}
+
+$('#ords').onclick = async e => {
+  const b = e.target.closest('button[data-a]'); if (!b) return;
+  const card = b.closest('.ord'), id = card.dataset.id, a = b.dataset.a;
+  try {
+    if (a === 'proof') {
+      const d = await api(`/api/admin/orders/${id}/proof`);
+      $('#mimg').src = d.proof; $('#modal').classList.remove('hide'); return;
+    }
+    const body = { note: card.querySelector('.note').value };
+    if (a === 'completed' || a === 'rejected') {
+      if (!confirm(`${id} ን "${STATE[a]}" ልታደርገው ነው?`)) return;
+      body.status = a;
+    }
+    await api('/api/admin/orders/' + id, { method: 'POST', body: JSON.stringify(body) });
+    toast('ተቀምጧል ✓'); load();
+  } catch (err) { toast(err.message); }
+};
+$('#modal').onclick = () => { $('#modal').classList.add('hide'); $('#mimg').src = ''; };
+
+document.querySelectorAll('.chip').forEach(c => c.onclick = () => {
+  filter = c.dataset.f;
+  document.querySelectorAll('.chip').forEach(x => x.setAttribute('aria-pressed', x === c));
+  render();
+});
+
+async function loadSettings() {
+  try {
+    const s = await (await fetch(window.API_URL + '/api/config')).json();
+    $('#settings').innerHTML = FIELDS.map(([k, l, t]) =>
+      `<div class="field ${k === 'announcement' || k === 'telegram' ? 'full' : ''}"><label>${esc(l)}</label><input name="${k}" type="${t}" step="any" value="${esc(s[k])}"></div>`
+    ).join('') +
+      `<div class="field"><label>አገልግሎት</label><select name="open"><option value="1" ${s.open === '1' ? 'selected' : ''}>ክፍት</option><option value="0" ${s.open !== '1' ? 'selected' : ''}>ዝግ</option></select></div>
+       <div class="full"><button class="btn" type="submit">ቅንብሮችን አስቀምጥ</button></div>`;
+  } catch (e) {}
+}
+$('#settings').onsubmit = async e => {
+  e.preventDefault();
+  const body = Object.fromEntries(new FormData(e.target).entries());
+  try { await api('/api/admin/settings', { method: 'POST', body: JSON.stringify(body) }); toast('ቅንብር ተቀምጧል ✓'); }
+  catch (err) { toast(err.message); }
+};
+
+if (token) enter();
+</script>
+</body>
+</html>
