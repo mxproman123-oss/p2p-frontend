@@ -3,73 +3,108 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="robots" content="noindex">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
 <title>Admin</title>
 <link rel="stylesheet" href="style.css">
 <script src="config.js"></script>
 </head>
-<body>
+<body class="adm">
+<div class="flag"></div>
 
 <form id="login" class="login">
   <h1>Admin</h1>
-  <div class="field"><label for="pw">Password</label><input id="pw" type="password" required></div>
+  <div class="field"><label for="pw">Password</label><input id="pw" type="password" autocomplete="current-password" required></div>
   <button class="btn block" type="submit">ግባ</button>
 </form>
 
-<div id="app" class="wrap hide">
-  <header class="bar">
+<div id="app" class="hide">
+  <header class="top"><div class="wrap in">
     <div class="logo"><span class="stamp">ብ</span>Admin</div>
-    <button class="btn sec sm" id="out">ውጣ</button>
-  </header>
+    <nav class="navtabs" id="navtabs">
+      <button data-v="dash">ዳሽቦርድ</button>
+      <button data-v="orders">ትዕዛዞች</button>
+      <button data-v="users">ተጠቃሚዎች</button>
+      <button data-v="settings">ቅንብሮች</button>
+    </nav>
+    <button class="btn sec sm" id="out" style="color:#fff;border-color:#fff">ውጣ</button>
+  </div></header>
 
-  <div class="stats">
-    <div><b id="stP">0</b><span>በመጠበቅ ላይ</span></div>
-    <div><b id="stPd">0</b><span>ማስረጃ የተላከ (ለማረጋገጥ)</span></div>
-    <div><b id="stC">0</b><span>የተጠናቀቁ</span></div>
-    <div><b id="stV">0</b><span>ጠቅላላ USD</span></div>
-  </div>
+  <main class="wrap page">
+    <!-- ዳሽቦርድ -->
+    <section id="v-dash">
+      <div class="stats" id="stats"></div>
+      <div class="dash2">
+        <div><h3>ለማረጋገጥ የሚጠብቁ</h3><div class="mini" id="needs"></div></div>
+        <div><h3>የቅርብ ትዕዛዞች</h3><div class="mini" id="recent"></div></div>
+      </div>
+    </section>
 
-  <div class="tabs" role="group">
-    <button class="chip" data-f="paid" aria-pressed="true">ለማረጋገጥ</button>
-    <button class="chip" data-f="pending" aria-pressed="false">በመጠበቅ ላይ</button>
-    <button class="chip" data-f="completed" aria-pressed="false">የተጠናቀቁ</button>
-    <button class="chip" data-f="rejected" aria-pressed="false">ውድቅ</button>
-    <button class="chip" data-f="all" aria-pressed="false">ሁሉም</button>
-    <button class="chip" data-f="settings" aria-pressed="false">ቅንብሮች</button>
-  </div>
+    <!-- ትዕዛዞች -->
+    <section id="v-orders" class="hide">
+      <div class="tools">
+        <input type="search" id="q" placeholder="ፈልግ: ቁጥር፣ ስም፣ ስልክ፣ UID" aria-label="ፈልግ">
+      </div>
+      <div class="tabs" style="margin-bottom:16px">
+        <button class="chip" data-f="paid" aria-pressed="true">ለማረጋገጥ</button>
+        <button class="chip" data-f="pending" aria-pressed="false">በመጠበቅ ላይ</button>
+        <button class="chip" data-f="completed" aria-pressed="false">የተጠናቀቁ</button>
+        <button class="chip" data-f="rejected" aria-pressed="false">ውድቅ</button>
+        <button class="chip" data-f="cancelled" aria-pressed="false">የተሰረዙ</button>
+        <button class="chip" data-f="all" aria-pressed="false">ሁሉም</button>
+      </div>
+      <div id="ords" class="ords"></div>
+    </section>
 
-  <div id="ords" class="ords"></div>
+    <!-- ተጠቃሚዎች -->
+    <section id="v-users" class="hide">
+      <div class="tools"><input type="search" id="uq" placeholder="ፈልግ: ስም ወይም ስልክ" aria-label="ተጠቃሚ ፈልግ"></div>
+      <div id="ulist" class="ords"></div>
+    </section>
 
-  <form id="settings" class="setgrid hide"></form>
+    <!-- ቅንብሮች -->
+    <section id="v-settings" class="hide"><form id="settings" class="setgrid"></form></section>
+  </main>
+
+  <nav class="tabbar" id="tabbar" style="--n:4">
+    <button data-v="dash">ዳሽ</button>
+    <button data-v="orders">ትዕዛዞች</button>
+    <button data-v="users">ተጠቃሚ</button>
+    <button data-v="settings">ቅንብር</button>
+  </nav>
 </div>
 
 <div id="modal" class="modal hide"><img id="mimg" alt="ማስረጃ"></div>
 
 <script>
 const $ = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const fmt = n => Number(n).toLocaleString('en-US', { maximumFractionDigits: 2 });
+const when = s => new Date(s + 'Z').toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' });
 const STATE = { pending: 'በመጠበቅ ላይ', paid: 'ለማረጋገጥ', completed: 'ተጠናቀቀ', rejected: 'ውድቅ', cancelled: 'ተሰርዟል' };
-const FIELDS = [
-  ['buy_rate', 'USD ሲገዙ ዋጋ (ብር)', 'number'], ['sell_rate', 'USD ሲሸጡ ዋጋ (ብር)', 'number'],
-  ['min_usd', 'ዝቅተኛ USD', 'number'], ['max_usd', 'ከፍተኛ USD', 'number'],
-  ['binance_uid', 'የእርስዎ Binance UID', 'text'], ['bybit_uid', 'የእርስዎ Bybit UID', 'text'],
-  ['telebirr', 'Telebirr ቁጥር እና ስም', 'text'], ['cbe', 'CBE አካውንት እና ስም', 'text'],
-  ['telegram', 'Telegram link (ድጋፍ)', 'text'], ['announcement', 'ማስታወቂያ (ባዶ ከሆነ አይታይም)', 'text'],
+const SECTIONS = [
+  ['Rates', [['buy_rate', 'USD ሲገዙ ዋጋ (ብር)', 'number'], ['sell_rate', 'USD ሲሸጡ ዋጋ (ብር)', 'number'], ['min_usd', 'ዝቅተኛ USD', 'number'], ['max_usd', 'ከፍተኛ USD', 'number']]],
+  ['የእርስዎ መቀበያ አካውንቶች', [['binance_uid', 'Binance UID', 'text'], ['bybit_uid', 'Bybit UID', 'text'], ['telebirr', 'Telebirr ቁጥር እና ስም', 'text'], ['cbe', 'CBE አካውንት እና ስም', 'text']]],
+  ['ድረ-ገጽ', [['telegram', 'Telegram link (https://t.me/...)', 'text', 'full'], ['announcement', 'ማስታወቂያ (ባዶ ከሆነ አይታይም)', 'text', 'full']]],
 ];
-let token = sessionStorage.getItem('p2p_admin') || '', filter = 'paid', orders = [], poll = null;
+let token = sessionStorage.getItem('p2p_admin') || '', filter = 'paid', orders = [], users = [], stats = {}, v = 'dash', poll = null;
 
-function toast(m) { const t = document.createElement('div'); t.className = 'toast'; t.textContent = m; document.body.appendChild(t); setTimeout(() => t.remove(), 3000); }
+function toast(m) { const t = document.createElement('div'); t.className = 'toast'; t.textContent = m; document.body.appendChild(t); setTimeout(() => t.remove(), 3200); }
 async function api(path, opts = {}) {
-  const r = await fetch(window.API_URL + path, { ...opts, headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token } });
+  let r;
+  try { r = await fetch(window.API_URL + path, { ...opts, headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token } }); }
+  catch (e) { throw new Error('ከሰርቨር ጋር መገናኘት አልተቻለም።'); }
   const d = await r.json().catch(() => ({}));
-  if (r.status === 401 && token) { logout(); throw new Error('ድጋሚ ግባ።'); }
+  if (r.status === 401 && token && !path.endsWith('/login')) { logout(); throw new Error('ድጋሚ ግባ።'); }
   if (!r.ok) throw new Error(d.error || 'ስህተት ተፈጥሯል።');
   return d;
 }
 function logout() { token = ''; sessionStorage.removeItem('p2p_admin'); clearInterval(poll); $('#app').classList.add('hide'); $('#login').classList.remove('hide'); }
-function enter() { $('#login').classList.add('hide'); $('#app').classList.remove('hide'); load(); loadSettings(); clearInterval(poll); poll = setInterval(load, 20000); }
-
+function enter() {
+  $('#login').classList.add('hide'); $('#app').classList.remove('hide'); document.body.classList.add('has-tabbar');
+  go('dash'); load(); loadSettings(); clearInterval(poll); poll = setInterval(load, 20000);
+}
 $('#login').onsubmit = async e => {
   e.preventDefault();
   try {
@@ -79,81 +114,139 @@ $('#login').onsubmit = async e => {
 };
 $('#out').onclick = logout;
 
+function go(name) {
+  v = name;
+  ['dash', 'orders', 'users', 'settings'].forEach(x => $('#v-' + x).classList.toggle('hide', x !== name));
+  $$('[data-v]').forEach(b => b.setAttribute('aria-current', b.dataset.v === name ? 'page' : 'false'));
+  if (name === 'users') loadUsers();
+  window.scrollTo(0, 0);
+}
+document.addEventListener('click', e => { const b = e.target.closest('[data-v]'); if (b) go(b.dataset.v); });
+
 async function load() {
-  try {
-    const d = await api('/api/admin/orders'); orders = d.orders;
-    $('#stP').textContent = d.stats.pending; $('#stPd').textContent = d.stats.paid;
-    $('#stC').textContent = d.stats.completed; $('#stV').textContent = fmt(d.stats.volume_usd);
-    render();
-  } catch (e) { if (token) toast(e.message); }
+  try { const d = await api('/api/admin/orders'); orders = d.orders; stats = d.stats; renderDash(); renderOrders(); }
+  catch (e) { if (token) toast(e.message); }
 }
 
-function render() {
-  const box = $('#ords');
-  if (filter === 'settings') { box.classList.add('hide'); $('#settings').classList.remove('hide'); return; }
-  box.classList.remove('hide'); $('#settings').classList.add('hide');
-  const list = filter === 'all' ? orders : orders.filter(o => o.status === filter);
-  if (!list.length) { box.innerHTML = '<p class="empty">በዚህ ምድብ ትዕዛዝ የለም።</p>'; return; }
+/* ---------- ዳሽቦርድ ---------- */
+function orow(o) {
+  return `<button class="orow" data-goto="${esc(o.id)}"><div><b>${esc(o.id)}</b><small>${esc(o.user_name || '—')} • ${o.side === 'buy' ? 'ግዢ' : 'ሽያጭ'} • ${esc(o.platform)}</small></div>
+    <div class="r"><b>${fmt(o.usd)} USD</b><span class="state ${esc(o.status)}">${esc(STATE[o.status] || o.status)}</span></div></button>`;
+}
+function renderDash() {
+  const s = stats;
+  $('#stats').innerHTML = [
+    ['ለማረጋገጥ', s.paid, 'var(--saffron)'], ['በመጠበቅ ላይ', s.pending, 'var(--sky)'],
+    ['የተጠናቀቁ', s.completed, 'var(--forest)'], ['ተጠቃሚዎች', s.users, 'var(--ink)'],
+    ['ጠቅላላ USD', fmt(s.volume_usd), 'var(--forest)'], ['ጠቅላላ ብር', fmt(s.volume_etb), 'var(--saffron)'],
+  ].map(([l, n, c]) => `<div class="stat" style="--c:${c}"><b>${esc(n)}</b><span>${esc(l)}</span></div>`).join('');
+  const need = orders.filter(o => o.status === 'paid');
+  $('#needs').innerHTML = need.length ? need.slice(0, 6).map(orow).join('') : '<div class="emptybox">ለማረጋገጥ የሚጠብቅ ትዕዛዝ የለም ✓</div>';
+  $('#recent').innerHTML = orders.length ? orders.slice(0, 6).map(orow).join('') : '<div class="emptybox">እስካሁን ትዕዛዝ የለም።</div>';
+}
+document.addEventListener('click', e => {
+  const b = e.target.closest('[data-goto]'); if (!b) return;
+  $('#q').value = b.dataset.goto; filter = 'all';
+  $$('.chip').forEach(x => x.setAttribute('aria-pressed', x.dataset.f === 'all'));
+  go('orders'); renderOrders();
+});
+
+/* ---------- ትዕዛዞች ---------- */
+function renderOrders() {
+  const box = $('#ords'), q = $('#q').value.trim().toLowerCase();
+  let list = filter === 'all' ? orders : orders.filter(o => o.status === filter);
+  if (q) list = list.filter(o => [o.id, o.user_name, o.user_phone, o.user_uid, o.contact, o.pay_account].join(' ').toLowerCase().includes(q));
+  if (!list.length) { box.innerHTML = '<div class="emptybox">በዚህ ምድብ ትዕዛዝ የለም።</div>'; return; }
   box.innerHTML = list.map(o => `
-    <article class="ord" data-id="${esc(o.id)}">
-      <div class="top"><b>${esc(o.id)}</b><span class="state ${esc(o.status)}">${esc(STATE[o.status] || o.status)}</span></div>
+    <article class="ord ${o.status === 'paid' ? 'hot' : ''}" data-id="${esc(o.id)}">
+      <div class="top2"><b>${esc(o.id)}</b><span class="state ${esc(o.status)}">${esc(STATE[o.status] || o.status)}</span></div>
       <div>
+        <div class="kv"><span>ተጠቃሚ</span><b>${esc(o.user_name || '—')} • ${esc(o.user_phone)}</b></div>
         <div class="kv"><span>አይነት</span><b>${o.side === 'buy' ? 'ደንበኛ USD ይገዛል' : 'ደንበኛ USD ይሸጣል'} • ${esc(o.platform)}</b></div>
         <div class="kv"><span>መጠን</span><b>${fmt(o.usd)} USD × ${fmt(o.rate)} = ${fmt(o.etb)} ብር</b></div>
         <div class="kv"><span>UID</span><b>${esc(o.user_uid)}</b></div>
         <div class="kv"><span>${esc(o.pay_method)}</span><b>${esc(o.pay_account)}</b></div>
         <div class="kv"><span>እውቂያ</span><b>${esc(o.contact)}</b></div>
-        <div class="kv"><span>ሰዓት</span><b>${esc(new Date(o.created + 'Z').toLocaleString())}</b></div>
+        <div class="kv"><span>ሰዓት</span><b>${esc(when(o.created))}</b></div>
       </div>
-      <div class="field"><input class="note" placeholder="ለደንበኛው መልእክት (አማራጭ)" value="${esc(o.note)}"></div>
+      <input class="note" placeholder="ለደንበኛው መልእክት (አማራጭ)" value="${esc(o.note)}" maxlength="300">
       <div class="acts">
-        ${o.has_proof ? '<button class="btn sec sm" data-a="proof">ማስረጃ እይ</button>' : ''}
-        <button class="btn ok sm" data-a="completed">ተጠናቀቀ</button>
-        <button class="btn bad sm" data-a="rejected">ውድቅ</button>
+        ${o.has_proof ? '<button class="btn sec sm" data-a="proof">📎 ማስረጃ እይ</button>' : ''}
+        ${['pending', 'paid'].includes(o.status) ? '<button class="btn ok sm" data-a="completed">ተጠናቀቀ</button><button class="btn bad sm" data-a="rejected">ውድቅ</button>' : ''}
         <button class="btn sec sm" data-a="note">መልእክት አስቀምጥ</button>
       </div>
     </article>`).join('');
 }
-
+$('#q').oninput = renderOrders;
+$$('.chip').forEach(c => c.onclick = () => {
+  filter = c.dataset.f; $$('.chip').forEach(x => x.setAttribute('aria-pressed', x === c)); renderOrders();
+});
 $('#ords').onclick = async e => {
   const b = e.target.closest('button[data-a]'); if (!b) return;
   const card = b.closest('.ord'), id = card.dataset.id, a = b.dataset.a;
   try {
-    if (a === 'proof') {
-      const d = await api(`/api/admin/orders/${id}/proof`);
-      $('#mimg').src = d.proof; $('#modal').classList.remove('hide'); return;
-    }
+    if (a === 'proof') { const d = await api(`/api/admin/orders/${encodeURIComponent(id)}/proof`); $('#mimg').src = d.proof; $('#modal').classList.remove('hide'); return; }
     const body = { note: card.querySelector('.note').value };
     if (a === 'completed' || a === 'rejected') {
       if (!confirm(`${id} ን "${STATE[a]}" ልታደርገው ነው?`)) return;
       body.status = a;
     }
-    await api('/api/admin/orders/' + id, { method: 'POST', body: JSON.stringify(body) });
+    await api('/api/admin/orders/' + encodeURIComponent(id), { method: 'POST', body: JSON.stringify(body) });
     toast('ተቀምጧል ✓'); load();
   } catch (err) { toast(err.message); }
 };
 $('#modal').onclick = () => { $('#modal').classList.add('hide'); $('#mimg').src = ''; };
 
-document.querySelectorAll('.chip').forEach(c => c.onclick = () => {
-  filter = c.dataset.f;
-  document.querySelectorAll('.chip').forEach(x => x.setAttribute('aria-pressed', x === c));
-  render();
-});
+/* ---------- ተጠቃሚዎች ---------- */
+async function loadUsers() { try { users = (await api('/api/admin/users')).users; renderUsers(); } catch (e) { toast(e.message); } }
+function renderUsers() {
+  const q = $('#uq').value.trim().toLowerCase();
+  const list = users.filter(u => !q || (u.name + ' ' + u.phone).toLowerCase().includes(q));
+  $('#ulist').innerHTML = list.length ? list.map(u => `
+    <article class="ord" data-uid="${u.id}">
+      <div class="top2"><b>${esc(u.name)}</b>${u.banned ? '<span class="state rejected">ታግዷል</span>' : ''}</div>
+      <div>
+        <div class="kv"><span>ስልክ</span><b>${esc(u.phone)}</b></div>
+        <div class="kv"><span>Telegram</span><b>${esc(u.contact || '—')}</b></div>
+        <div class="kv"><span>ትዕዛዞች</span><b>${u.orders}</b></div>
+        <div class="kv"><span>የተመዘገበው</span><b>${esc(when(u.created))}</b></div>
+      </div>
+      <div class="acts">
+        <button class="btn sec sm" data-ua="pw">Password ቀይር</button>
+        <button class="btn ${u.banned ? 'ok' : 'bad'} sm" data-ua="ban">${u.banned ? 'ክፈት' : 'እግድ'}</button>
+      </div>
+    </article>`).join('') : '<div class="emptybox">ተጠቃሚ የለም።</div>';
+}
+$('#uq').oninput = renderUsers;
+$('#ulist').onclick = async e => {
+  const b = e.target.closest('[data-ua]'); if (!b) return;
+  const id = b.closest('.ord').dataset.uid, u = users.find(x => String(x.id) === id);
+  try {
+    if (b.dataset.ua === 'pw') {
+      const pw = prompt(`ለ ${u.name} አዲስ password (ቢያንስ 6 ቁምፊ):`); if (!pw) return;
+      await api('/api/admin/users/' + id, { method: 'POST', body: JSON.stringify({ password: pw }) });
+      toast('Password ተቀይሯል ✓');
+    } else {
+      if (!confirm(`${u.name} ን ${u.banned ? 'ልትከፍት' : 'ልታግድ'} ነው?`)) return;
+      await api('/api/admin/users/' + id, { method: 'POST', body: JSON.stringify({ banned: !u.banned }) });
+      toast('ተቀምጧል ✓'); loadUsers();
+    }
+  } catch (err) { toast(err.message); }
+};
 
+/* ---------- ቅንብሮች ---------- */
 async function loadSettings() {
   try {
     const s = await (await fetch(window.API_URL + '/api/config')).json();
-    $('#settings').innerHTML = FIELDS.map(([k, l, t]) =>
-      `<div class="field ${k === 'announcement' || k === 'telegram' ? 'full' : ''}"><label>${esc(l)}</label><input name="${k}" type="${t}" step="any" value="${esc(s[k])}"></div>`
-    ).join('') +
-      `<div class="field"><label>አገልግሎት</label><select name="open"><option value="1" ${s.open === '1' ? 'selected' : ''}>ክፍት</option><option value="0" ${s.open !== '1' ? 'selected' : ''}>ዝግ</option></select></div>
-       <div class="full"><button class="btn" type="submit">ቅንብሮችን አስቀምጥ</button></div>`;
+    $('#settings').innerHTML = SECTIONS.map(([h, fields]) => `<h3>${esc(h)}</h3>` + fields.map(([k, l, t, cls]) =>
+      `<div class="field ${cls || ''}"><label>${esc(l)}</label><input name="${k}" type="${t}" step="any" value="${esc(s[k])}"></div>`).join('')).join('') +
+      `<h3>አገልግሎት</h3><div class="field"><label>ሁኔታ</label><select name="open"><option value="1" ${s.open === '1' ? 'selected' : ''}>ክፍት</option><option value="0" ${s.open !== '1' ? 'selected' : ''}>ዝግ</option></select></div>
+       <div class="full"><button class="btn lg" type="submit">ቅንብሮችን አስቀምጥ</button></div>`;
   } catch (e) {}
 }
 $('#settings').onsubmit = async e => {
   e.preventDefault();
-  const body = Object.fromEntries(new FormData(e.target).entries());
-  try { await api('/api/admin/settings', { method: 'POST', body: JSON.stringify(body) }); toast('ቅንብር ተቀምጧል ✓'); }
+  try { await api('/api/admin/settings', { method: 'POST', body: JSON.stringify(Object.fromEntries(new FormData(e.target).entries())) }); toast('ቅንብር ተቀምጧል ✓'); }
   catch (err) { toast(err.message); }
 };
 

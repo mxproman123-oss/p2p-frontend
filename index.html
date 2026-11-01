@@ -3,233 +3,458 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<meta name="theme-color" content="#123628">
 <title>P2P ብር ⇄ USD</title>
 <meta name="description" content="Binance እና Bybit UID በመጠቀም USD ግዛ ወይም ሽጥ።">
 <link rel="stylesheet" href="style.css">
 <script src="config.js"></script>
 </head>
 <body>
+<div class="flag"></div>
 <div id="banner" class="banner hide"></div>
 
-<div class="wrap">
-  <header class="bar">
-    <div class="logo"><span class="stamp">ብ</span><span id="siteName">P2P ብር</span></div>
-    <a class="btn sec sm" href="#track">ትዕዛዝ ተከታተል</a>
-  </header>
+<header class="top"><div class="wrap in">
+  <a class="logo" href="#" id="logoLink"><span class="stamp">ብ</span><span id="siteName">P2P ብር</span></a>
+  <nav id="navtabs" class="navtabs hide">
+    <button data-tab="xchg">ልውውጥ</button>
+    <button data-tab="orders">ትዕዛዞቼ</button>
+    <button data-tab="me">መገለጫ</button>
+  </nav>
+  <div class="who" id="who"></div>
+</div></header>
 
-  <section class="hero">
-    <h1>ብር ⇄ ዶላር፣ በ UID ወዲያውኑ።</h1>
-    <p>Binance ወይም Bybit UID ብቻ በመስጠት USD ግዛ ወይም ሽጥ። ትዕዛዝ ከሰጠህ በኋላ ሁኔታውን በትዕዛዝ ቁጥር መከታተል ትችላለህ።</p>
+<!-- መጫኛ -->
+<main id="v-load" class="wrap center"><div class="spin"></div><p id="loadTxt">እየጫነ ነው…</p></main>
 
-    <div class="board" aria-label="የዛሬ ዋጋ">
-      <div class="row">
-        <div class="what"><b>USD ግዛ</b>አንተ ብር ትከፍላለህ</div>
-        <div class="num"><span id="rBuy">—</span><small>ብር / $1</small></div>
-      </div>
-      <div class="row">
-        <div class="what"><b>USD ሽጥ</b>አንተ ብር ትቀበላለህ</div>
-        <div class="num"><span id="rSell">—</span><small>ብር / $1</small></div>
+<!-- ማረፊያ ገጽ -->
+<main id="v-landing" class="hide">
+  <section class="wrap hero">
+    <div>
+      <p class="eyebrow">Binance • Bybit • Telebirr • CBE</p>
+      <h1>ብር ⇄ ዶላር።<br>ግልጽ ዋጋ፣ ግልጽ ሂደት።</h1>
+      <p class="lead">መለያ ክፈት፣ ዋጋውን ተመልከት፣ ትዕዛዝ ስጥ። ትዕዛዞችህ እና መረጃዎችህ በመለያህ ውስጥ ይቀመጣሉ፤ ወጥተህ ስትገባ ሁሉም እዚያው ነው።</p>
+      <div class="cta">
+        <button class="btn gold lg" data-auth="register">ነጻ መለያ ክፈት</button>
+        <button class="btn sec lg" data-auth="login">ግባ</button>
       </div>
     </div>
-    <div class="live" id="live"><i></i><span id="liveTxt">ከሰርቨር ጋር እየተገናኘ ነው…</span></div>
+    <div class="board" aria-label="የዛሬ ዋጋ">
+      <div class="row"><div class="what"><b>USD ግዛ</b>አንተ ብር ትከፍላለህ</div><div class="num"><span id="rBuy">—</span><small>ብር / 1 USD</small></div></div>
+      <div class="row"><div class="what"><b>USD ሽጥ</b>አንተ ብር ትቀበላለህ</div><div class="num"><span id="rSell">—</span><small>ብር / 1 USD</small></div></div>
+      <div class="foot" id="liveTxt">ከሰርቨር ጋር እየተገናኘ ነው…</div>
+    </div>
+  </section>
+  <ul class="wrap feat">
+    <li><b>ዋጋው ቅድሚያ ይታያል</b><span>ከመላክህ በፊት የምትከፍለው ወይም የምታገኘው ብር በትክክል ይታያል።</span></li>
+    <li><b>ትዕዛዝህን ትከታተላለህ</b><span>ከመቀበል እስከ መጠናቀቅ ያለውን ሂደት በደረጃ ታያለህ።</span></li>
+    <li><b>መረጃህ ይቀመጣል</b><span>UID እና የክፍያ አካውንትህን አንዴ አስቀምጥ፣ በሚቀጥለው ጊዜ በራሱ ይሞላል።</span></li>
+  </ul>
+  <section class="wrap sect">
+    <h2>እንዴት ይሰራል</h2>
+    <ol class="how">
+      <li><b>መለያ ክፈት</b>ስም፣ ስልክ እና password ብቻ።</li>
+      <li><b>መጠን ምረጥ</b>USD መግዛት ወይም መሸጥ፣ Binance ወይም Bybit።</li>
+      <li><b>ላክ እና ማስረጃ ጫን</b>ወደተሰጠህ አካውንት ላክ፣ screenshot ጫን።</li>
+      <li><b>ተጠናቀቀ</b>ስንረጋግጥ ትዕዛዝህ "ተጠናቀቀ" ይላል።</li>
+    </ol>
+  </section>
+  <footer class="wrap foot2"><span id="tg"></span><div style="margin-top:6px">ከመላክህ በፊት UID እና መጠኑን ደግመህ አረጋግጥ። የተላከ ገንዘብ ሊመለስ አይችልም።</div></footer>
+</main>
+
+<!-- መግቢያ -->
+<main id="v-auth" class="hide"><div class="wrap narrow">
+  <div class="authcard">
+    <h1 id="aTitle">እንኳን ደህና መጣህ</h1>
+    <div class="seg" role="group" aria-label="ግባ ወይም ተመዝገብ">
+      <button type="button" id="aLogin" aria-pressed="true">ግባ</button>
+      <button type="button" id="aReg" aria-pressed="false">መለያ ክፈት</button>
+    </div>
+    <form id="authForm" style="display:grid;gap:16px" novalidate>
+      <div class="field hide" id="nameF"><label for="aName">ሙሉ ስም</label><input id="aName" autocomplete="name" maxlength="60"></div>
+      <div class="field"><label for="aPhone">ስልክ ቁጥር</label><input id="aPhone" inputmode="tel" autocomplete="tel" placeholder="09XXXXXXXX" maxlength="16"></div>
+      <div class="field"><label for="aPw">Password</label>
+        <div class="pw"><input id="aPw" type="password" autocomplete="current-password" maxlength="100"><button type="button" id="pwT">አሳይ</button></div>
+        <div class="hint hide" id="pwH">ቢያንስ 6 ቁምፊ። ለሌላ ቦታ የምትጠቀመውን አትድገም።</div>
+      </div>
+      <button class="btn block lg" id="aGo" type="submit">ግባ</button>
+    </form>
+    <p class="hint">Password ከረሳህ በ Telegram አግኙን፣ አዲስ እንሰጥሃለን።</p>
+  </div>
+</div></main>
+
+<!-- መተግበሪያ -->
+<main id="v-app" class="wrap page hide">
+
+  <!-- ልውውጥ -->
+  <section id="t-xchg">
+    <ol class="stp"><li data-s="1">1 · መጠን</li><li data-s="2">2 · መረጃ</li><li data-s="3">3 · አረጋግጥ</li></ol>
+    <div class="layout">
+      <div>
+        <!-- ደረጃ 1 -->
+        <div class="wz" data-s="1" style="display:grid;gap:16px">
+          <div class="seg" role="group" aria-label="አይነት"><button type="button" id="sBuy" aria-pressed="true">USD ግዛ</button><button type="button" id="sSell" aria-pressed="false">USD ሽጥ</button></div>
+          <div class="seg" role="group" aria-label="መድረክ"><button type="button" id="plBin" aria-pressed="true">Binance</button><button type="button" id="plByb" aria-pressed="false">Bybit</button></div>
+          <div class="calc">
+            <div class="lbl" id="usdL">የሚፈልጉት መጠን</div>
+            <div class="amt"><input id="usd" type="number" inputmode="decimal" min="1" step="any" placeholder="0" aria-label="USD መጠን"><span>USD</span></div>
+            <div class="qa" id="qa"><button type="button" data-q="10">10</button><button type="button" data-q="25">25</button><button type="button" data-q="50">50</button><button type="button" data-q="100">100</button></div>
+            <div class="out"><span id="cLbl">ትከፍላለህ</span><b><span id="cEtb">0</span> ብር</b></div>
+            <div class="rt" id="cRate"></div>
+          </div>
+          <div class="hint" id="limits"></div>
+          <button class="btn block lg" id="n1" type="button">ቀጥል</button>
+        </div>
+
+        <!-- ደረጃ 2 -->
+        <div class="wz panel hide" data-s="2">
+          <h3>መረጃዎችህ</h3>
+          <div class="field"><label for="uid" id="uidL">Binance UID</label><input id="uid" inputmode="numeric" maxlength="60" placeholder="ለምሳሌ 123456789"></div>
+          <div class="row2">
+            <div class="field"><label for="payMethod">የክፍያ መንገድ</label><select id="payMethod"></select></div>
+            <div class="field"><label for="payAcc" id="payAccL">ስልክ / ስም</label><input id="payAcc" maxlength="80"></div>
+          </div>
+          <div class="field"><label for="contact">Telegram username (አማራጭ)</label><input id="contact" maxlength="80" placeholder="@username"><div class="hint">ካልሞላህ በስልክ ቁጥርህ እናገኝሃለን።</div></div>
+          <div class="nav2"><button class="btn sec back" type="button" id="b2">ተመለስ</button><button class="btn" type="button" id="n2">ቀጥል</button></div>
+        </div>
+
+        <!-- ደረጃ 3 -->
+        <div class="wz panel hide" data-s="3">
+          <h3>ትዕዛዝህን አረጋግጥ</h3>
+          <div class="sum" id="sum"></div>
+          <label class="check"><input type="checkbox" id="ok"><span>UID፣ መጠኑ እና የክፍያ መረጃዬ ትክክል መሆኑን አረጋግጫለሁ።</span></label>
+          <label class="check"><input type="checkbox" id="save" checked><span>ለሚቀጥለው ጊዜ መረጃዬን አስቀምጥ።</span></label>
+          <div class="nav2"><button class="btn sec back" type="button" id="b3">ተመለስ</button><button class="btn gold" type="button" id="go">ትዕዛዝ አስገባ</button></div>
+        </div>
+      </div>
+      <aside class="side">
+        <div class="board">
+          <div class="row"><div class="what"><b>USD ግዛ</b></div><div class="num"><span id="sBuyR">—</span><small>ብር</small></div></div>
+          <div class="row"><div class="what"><b>USD ሽጥ</b></div><div class="num"><span id="sSellR">—</span><small>ብር</small></div></div>
+        </div>
+        <div class="tip"><b>ከመጀመርህ በፊት</b>ትዕዛዝ ካስገባህ በኋላ የምትልክበት አካውንት ይታያል። ክፍያውን ከላክህ በኋላ screenshot መጫንህን አትርሳ።</div>
+      </aside>
+    </div>
   </section>
 
-  <main class="grid">
-    <section class="ticket" id="order">
-      <div class="stub">
-        <h2 id="ttl">USD ግዛ</h2>
-        <div class="eq"><span id="etb">0</span> ብር</div>
-      </div>
-      <form id="form" autocomplete="off">
-        <div class="seg" role="group" aria-label="የትዕዛዝ አይነት">
-          <button type="button" id="sBuy" aria-pressed="true">USD ግዛ</button>
-          <button type="button" id="sSell" aria-pressed="false">USD ሽጥ</button>
-        </div>
-        <div class="seg" role="group" aria-label="መድረክ">
-          <button type="button" id="pBin" aria-pressed="true">Binance</button>
-          <button type="button" id="pByb" aria-pressed="false">Bybit</button>
-        </div>
-        <div class="field">
-          <label for="usd" id="usdL">የሚፈልጉት USD</label>
-          <input id="usd" type="number" inputmode="decimal" min="1" step="any" placeholder="ለምሳሌ 50" required>
-          <div class="hint" id="limits"></div>
-        </div>
-        <div class="field">
-          <label for="uid" id="uidL">Binance UID</label>
-          <input id="uid" inputmode="numeric" placeholder="ለምሳሌ 123456789" required>
+  <!-- ትዕዛዞቼ -->
+  <section id="t-orders" class="hide">
+    <h2>ትዕዛዞቼ</h2>
+    <div id="olist" class="olist"></div>
+  </section>
+
+  <!-- መገለጫ -->
+  <section id="t-me" class="hide">
+    <h2>መገለጫ</h2>
+    <div class="layout">
+      <form class="panel" id="pform">
+        <div class="kv" style="display:flex;justify-content:space-between"><span>ስም</span><b id="pName"></b></div>
+        <div class="kv" style="display:flex;justify-content:space-between"><span>ስልክ</span><b id="pPhone"></b></div>
+        <div class="field"><label for="fContact">Telegram username</label><input id="fContact" maxlength="80" placeholder="@username"></div>
+        <div class="row2">
+          <div class="field"><label for="fBin">Binance UID</label><input id="fBin" maxlength="60" inputmode="numeric"></div>
+          <div class="field"><label for="fByb">Bybit UID</label><input id="fByb" maxlength="60" inputmode="numeric"></div>
         </div>
         <div class="row2">
-          <div class="field">
-            <label for="payMethod">የክፍያ መንገድ</label>
-            <select id="payMethod"></select>
-          </div>
-          <div class="field">
-            <label for="payAcc" id="payAccL">የምትከፍልበት ስልክ / ስም</label>
-            <input id="payAcc" placeholder="09…" required>
-          </div>
+          <div class="field"><label for="fMethod">የክፍያ መንገድ</label><select id="fMethod"></select></div>
+          <div class="field"><label for="fAcc">የክፍያ ስልክ / ስም</label><input id="fAcc" maxlength="80"></div>
         </div>
-        <div class="field">
-          <label for="contact">Telegram username ወይም ስልክ</label>
-          <input id="contact" placeholder="@username" required>
-          <div class="hint">ትዕዛዙን ለማረጋገጥ ብቻ ነው የምንጠቀምበት።</div>
-        </div>
-        <button class="btn block" id="go" type="submit">ትዕዛዝ ስጥ</button>
+        <button class="btn" type="submit">መረጃዬን አስቀምጥ</button>
       </form>
-    </section>
-
-    <aside id="side">
-      <div id="empty" class="receipt empty">
-        <h3>እንዴት ይሰራል</h3>
-        <ol>
-          <li>USD መግዛት ወይም መሸጥ ምረጥ፣ ቅጹን ሙላ።</li>
-          <li>ትዕዛዝ ቁጥር ታገኛለህ፤ ብሩን ወይም USD ን ወደ ተሰጠው አካውንት ላክ።</li>
-          <li>የክፍያ screenshot ጫን።</li>
-          <li>ሲረጋገጥ ትዕዛዙ "ተጠናቀቀ" ይላል።</li>
-        </ol>
+      <div class="side">
+        <form class="panel" id="pwForm">
+          <h3>Password ቀይር</h3>
+          <div class="field"><label for="pw1">የአሁኑ</label><input id="pw1" type="password" autocomplete="current-password"></div>
+          <div class="field"><label for="pw2">አዲስ (ቢያንስ 6 ቁምፊ)</label><input id="pw2" type="password" autocomplete="new-password"></div>
+          <button class="btn sec" type="submit">ቀይር</button>
+        </form>
+        <button class="btn bad" id="logout" type="button">ውጣ</button>
       </div>
-      <div id="receipt" class="receipt hide"></div>
+    </div>
+  </section>
 
-      <div id="track" style="margin-top:34px">
-        <h3 style="font-family:var(--display)">የትዕዛዝ ቁጥር አለህ?</h3>
-        <div class="track">
-          <input id="tid" placeholder="P2P-A1B2C3" aria-label="የትዕዛዝ ቁጥር">
-          <button class="btn" id="tbtn" type="button">ፈልግ</button>
-        </div>
-      </div>
-    </aside>
-  </main>
+  <!-- ደረሰኝ -->
+  <section id="t-order" class="hide">
+    <button class="back" id="backBtn" type="button">← ወደ ትዕዛዞቼ</button>
+    <div id="receipt"></div>
+  </section>
+</main>
 
-  <footer class="foot">
-    <span id="tg"></span>
-    <div style="margin-top:6px">ከመላክህ በፊት UID እና መጠኑን ደግመህ አረጋግጥ። የተላከ ገንዘብ ሊመለስ አይችልም።</div>
-  </footer>
-</div>
+<nav id="tabbar" class="tabbar hide" style="--n:3">
+  <button data-tab="xchg"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h14l-4-4M20 16H6l4 4"/></svg>ልውውጥ</button>
+  <button data-tab="orders"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2zM9 8h6M9 12h6"/></svg>ትዕዛዞቼ</button>
+  <button data-tab="me"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg>መገለጫ</button>
+</nav>
 
 <script>
 const $ = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
 const METHODS = ['Telebirr', 'CBE (ንግድ ባንክ)', 'M-Pesa', 'Awash', 'Dashen', 'Abyssinia'];
 const PLAT = { binance: 'Binance', bybit: 'Bybit' };
-const STATE = {
-  pending: 'ክፍያ በመጠበቅ ላይ', paid: 'ማስረጃ ተልኳል፣ እየተረጋገጠ ነው',
-  completed: 'ተጠናቀቀ', rejected: 'ውድቅ ሆኗል', cancelled: 'ተሰርዟል'
-};
-let cfg = null, side = 'buy', platform = 'binance', current = null, timer = null;
+const STATE = { pending: 'ክፍያ በመጠበቅ ላይ', paid: 'በማረጋገጥ ላይ', completed: 'ተጠናቀቀ', rejected: 'ውድቅ ሆኗል', cancelled: 'ተሰርዟል' };
+const OPEN = ['pending', 'paid'];
+
+let cfg = null, token = localStorage.getItem('p2p_token') || '', user = null, orders = [], cur = null, timer = null;
+const w = { side: 'buy', platform: 'binance', step: 1, dirty: {} };
 
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const fmt = n => Number(n).toLocaleString('en-US', { maximumFractionDigits: 2 });
+const when = s => new Date(s + 'Z').toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' });
 function toast(m) {
   const t = document.createElement('div'); t.className = 'toast'; t.textContent = m;
-  document.body.appendChild(t); setTimeout(() => t.remove(), 3500);
+  document.body.appendChild(t); setTimeout(() => t.remove(), 3800);
 }
 async function api(path, opts = {}) {
-  const r = await fetch(window.API_URL + path, { headers: { 'Content-Type': 'application/json' }, ...opts });
+  const h = { 'Content-Type': 'application/json' };
+  if (token) h.Authorization = 'Bearer ' + token;
+  let r;
+  try { r = await fetch(window.API_URL + path, { ...opts, headers: h }); }
+  catch (e) { throw new Error('ከሰርቨር ጋር መገናኘት አልተቻለም። እንደገና ሞክር።'); }
   const d = await r.json().catch(() => ({}));
+  if (r.status === 401 && token && !path.startsWith('/api/auth')) { doLogout(); throw new Error(d.error || 'ድጋሚ ግባ።'); }
   if (!r.ok) throw new Error(d.error || 'ስህተት ተፈጥሯል።');
   return d;
 }
 
-/* ---------- config + rates ---------- */
+/* ---------- ገጾች ---------- */
+function view(v) {
+  ['load', 'landing', 'auth', 'app'].forEach(x => $('#v-' + x).classList.toggle('hide', x !== v));
+  const app = v === 'app';
+  $('#tabbar').classList.toggle('hide', !app); $('#navtabs').classList.toggle('hide', !app);
+  document.body.classList.toggle('has-tabbar', app);
+  renderWho(); window.scrollTo(0, 0);
+}
+function tab(t) {
+  ['xchg', 'orders', 'me', 'order'].forEach(x => $('#t-' + x).classList.toggle('hide', x !== t));
+  const hl = t === 'order' ? 'orders' : t;
+  $$('[data-tab]').forEach(b => b.setAttribute('aria-current', b.dataset.tab === hl ? 'page' : 'false'));
+  if (t !== 'order') clearInterval(timer);
+  if (t === 'orders') loadOrders();
+  if (t === 'me') fillProfile();
+  window.scrollTo(0, 0);
+}
+function renderWho() {
+  $('#who').innerHTML = user
+    ? `<button class="chipu" data-tab="me" aria-label="መገለጫ"><span class="av">${esc((user.name.trim()[0] || '?').toUpperCase())}</span>${esc(user.name.split(' ')[0])}</button>`
+    : `<button class="btn sec sm" data-auth="login">ግባ</button><button class="btn sm" data-auth="register">ተመዝገብ</button>`;
+}
+document.addEventListener('click', e => {
+  const t = e.target.closest('[data-tab]'); if (t) { if (user) { view('app'); tab(t.dataset.tab); } return; }
+  const a = e.target.closest('[data-auth]'); if (a) { authMode(a.dataset.auth); view('auth'); }
+});
+$('#logoLink').onclick = e => { e.preventDefault(); if (user) { view('app'); tab('xchg'); } else view('landing'); };
+
+/* ---------- ዋጋ ---------- */
 async function loadConfig(tries = 0) {
   try {
     cfg = await api('/api/config');
-    $('#live').classList.add('on'); $('#liveTxt').textContent = 'ዋጋዎች ወቅታዊ ናቸው';
-    $('#rBuy').textContent = fmt(cfg.buy_rate); $('#rSell').textContent = fmt(cfg.sell_rate);
+    ['#rBuy', '#sBuyR'].forEach(s => $(s).textContent = fmt(cfg.buy_rate));
+    ['#rSell', '#sSellR'].forEach(s => $(s).textContent = fmt(cfg.sell_rate));
+    $('#liveTxt').textContent = 'ዋጋዎች ወቅታዊ ናቸው';
     if (cfg.announcement) { $('#banner').textContent = cfg.announcement; $('#banner').classList.remove('hide'); }
-    if (cfg.telegram) $('#tg').innerHTML = 'ድጋፍ: <a href="' + esc(cfg.telegram) + '" target="_blank" rel="noopener">Telegram</a>';
+    if (cfg.telegram && /^https?:\/\//.test(cfg.telegram)) $('#tg').innerHTML = 'ድጋፍ: <a href="' + esc(cfg.telegram) + '" target="_blank" rel="noopener">Telegram</a>';
     $('#limits').textContent = `ከ ${cfg.min_usd} እስከ ${cfg.max_usd} USD`;
-    labels(); calc();
+    wCalc();
   } catch (e) {
-    $('#liveTxt').textContent = 'ሰርቨሩ እየነቃ ነው፣ እስከ 30 ሰከንድ ይወስዳል…';
-    if (tries < 10) setTimeout(() => loadConfig(tries + 1), 5000);
-    else $('#liveTxt').textContent = 'ከሰርቨር ጋር መገናኘት አልተቻለም። config.js ውስጥ API_URL አረጋግጥ።';
+    $('#liveTxt').textContent = 'ሰርቨሩ እየነቃ ነው… እስከ 50 ሰከንድ ይወስዳል';
+    if (tries < 14) setTimeout(() => loadConfig(tries + 1), 4000);
+    else $('#liveTxt').textContent = 'መገናኘት አልተቻለም። config.js ውስጥ API_URL አረጋግጥ።';
   }
 }
-function calc() {
-  if (!cfg) return;
-  const rate = +cfg[side === 'buy' ? 'buy_rate' : 'sell_rate'];
-  $('#etb').textContent = fmt((parseFloat($('#usd').value) || 0) * rate);
-}
-function labels() {
-  const p = PLAT[platform];
-  $('#ttl').textContent = side === 'buy' ? 'USD ግዛ' : 'USD ሽጥ';
-  $('#usdL').textContent = side === 'buy' ? 'የሚፈልጉት USD' : 'የሚሸጡት USD';
-  $('#uidL').textContent = side === 'buy' ? `USD የሚደርስበት ${p} UID` : `USD የምትልክበት የራስህ ${p} UID`;
-  $('#payAccL').textContent = side === 'buy' ? 'የምትከፍልበት ስልክ / ስም' : 'ብር የሚላክበት ቁጥር / ስም';
-  $('#sBuy').setAttribute('aria-pressed', side === 'buy'); $('#sSell').setAttribute('aria-pressed', side === 'sell');
-  $('#pBin').setAttribute('aria-pressed', platform === 'binance'); $('#pByb').setAttribute('aria-pressed', platform === 'bybit');
-}
-$('#payMethod').innerHTML = METHODS.map(m => `<option>${esc(m)}</option>`).join('');
-$('#sBuy').onclick = () => { side = 'buy'; labels(); calc(); };
-$('#sSell').onclick = () => { side = 'sell'; labels(); calc(); };
-$('#pBin').onclick = () => { platform = 'binance'; labels(); };
-$('#pByb').onclick = () => { platform = 'bybit'; labels(); };
-$('#usd').oninput = calc;
 
-/* ---------- order ---------- */
-$('#form').onsubmit = async e => {
+/* ---------- መግቢያ ---------- */
+let mode = 'login';
+function authMode(m) {
+  mode = m;
+  $('#nameF').classList.toggle('hide', m !== 'register');
+  $('#pwH').classList.toggle('hide', m !== 'register');
+  $('#aLogin').setAttribute('aria-pressed', m === 'login'); $('#aReg').setAttribute('aria-pressed', m === 'register');
+  $('#aGo').textContent = m === 'login' ? 'ግባ' : 'መለያ ክፈት';
+  $('#aTitle').textContent = m === 'login' ? 'እንኳን ደህና መጣህ' : 'አዲስ መለያ ክፈት';
+  $('#aPw').autocomplete = m === 'login' ? 'current-password' : 'new-password';
+}
+$('#aLogin').onclick = () => authMode('login');
+$('#aReg').onclick = () => authMode('register');
+$('#pwT').onclick = () => { const i = $('#aPw'); i.type = i.type === 'password' ? 'text' : 'password'; $('#pwT').textContent = i.type === 'password' ? 'አሳይ' : 'ደብቅ'; };
+$('#authForm').onsubmit = async e => {
   e.preventDefault();
-  const btn = $('#go'); btn.disabled = true; btn.textContent = 'እየላክን ነው…';
+  const btn = $('#aGo'), label = btn.textContent; btn.disabled = true; btn.textContent = 'እየጠበቅን ነው…';
   try {
-    const o = await api('/api/orders', {
-      method: 'POST',
-      body: JSON.stringify({
-        side, platform, usd: parseFloat($('#usd').value), user_uid: $('#uid').value,
-        contact: $('#contact').value, pay_method: $('#payMethod').value, pay_account: $('#payAcc').value
-      })
-    });
-    localStorage.setItem('p2p_last', o.id);
-    showOrder(o);
-    $('#side').scrollIntoView({ behavior: 'smooth' });
+    const body = { phone: $('#aPhone').value, password: $('#aPw').value };
+    if (mode === 'register') body.name = $('#aName').value;
+    const d = await api('/api/auth/' + mode, { method: 'POST', body: JSON.stringify(body) });
+    token = d.token; localStorage.setItem('p2p_token', token); user = d.user;
+    $('#aPw').value = ''; enter();
   } catch (err) { toast(err.message); }
-  btn.disabled = false; btn.textContent = 'ትዕዛዝ ስጥ';
+  btn.disabled = false; btn.textContent = label;
+};
+function doLogout() {
+  token = ''; localStorage.removeItem('p2p_token'); user = null; orders = []; cur = null;
+  clearInterval(timer); view('landing');
+}
+$('#logout').onclick = () => { if (confirm('መውጣት ትፈልጋለህ?')) doLogout(); };
+function enter() { view('app'); tab('xchg'); wReset(); }
+
+/* ---------- ልውውጥ ---------- */
+$('#payMethod').innerHTML = $('#fMethod').innerHTML = METHODS.map(m => `<option>${esc(m)}</option>`).join('');
+const rate = () => +cfg[w.side === 'buy' ? 'buy_rate' : 'sell_rate'];
+function wCalc() {
+  if (!cfg) return;
+  const usd = parseFloat($('#usd').value) || 0;
+  $('#cEtb').textContent = fmt(usd * rate());
+  $('#cRate').textContent = '1 USD = ' + fmt(rate()) + ' ብር';
+  $('#cLbl').textContent = w.side === 'buy' ? 'ትከፍላለህ' : 'ታገኛለህ';
+}
+function wLabels() {
+  const p = PLAT[w.platform], buy = w.side === 'buy';
+  $('#sBuy').setAttribute('aria-pressed', buy); $('#sSell').setAttribute('aria-pressed', !buy);
+  $('#plBin').setAttribute('aria-pressed', w.platform === 'binance'); $('#plByb').setAttribute('aria-pressed', w.platform === 'bybit');
+  $('#usdL').textContent = buy ? 'የሚገዙት መጠን' : 'የሚሸጡት መጠን';
+  $('#uidL').textContent = buy ? `USD የሚደርስበት ${p} UID` : `USD የምትልክበት የራስህ ${p} UID`;
+  $('#payAccL').textContent = buy ? 'ብር የምትከፍልበት ስም / ስልክ' : 'ብር የሚላክበት ቁጥር / ስም';
+  wCalc();
+}
+function wGo(n) {
+  w.step = n;
+  $$('.wz').forEach(el => el.classList.toggle('hide', +el.dataset.s !== n));
+  $$('.stp li').forEach(li => { const k = +li.dataset.s; li.className = k < n ? 'done' : k === n ? 'now' : ''; });
+  if (n === 2) {
+    if (!w.dirty.uid) $('#uid').value = user[w.platform + '_uid'] || '';
+    if (!w.dirty.pay) { $('#payMethod').value = METHODS.includes(user.pay_method) ? user.pay_method : METHODS[0]; $('#payAcc').value = user.pay_account || user.phone; }
+    if (!w.dirty.contact) $('#contact').value = user.contact || '';
+  }
+  if (n === 3) {
+    const usd = parseFloat($('#usd').value) || 0, buy = w.side === 'buy';
+    $('#sum').innerHTML = [
+      ['አይነት', (buy ? 'USD ግዢ' : 'USD ሽያጭ') + ' • ' + PLAT[w.platform]],
+      ['መጠን', fmt(usd) + ' USD'], ['ዋጋ', fmt(rate()) + ' ብር'],
+      [buy ? 'ትከፍላለህ' : 'ታገኛለህ', fmt(usd * rate()) + ' ብር'],
+      ['UID', $('#uid').value], [$('#payMethod').value, $('#payAcc').value]
+    ].map(([k, v]) => `<div class="kv"><span>${esc(k)}</span><b>${esc(v)}</b></div>`).join('');
+    $('#ok').checked = false;
+  }
+  window.scrollTo(0, 0);
+}
+function wReset() {
+  w.step = 1; w.dirty = {}; $('#usd').value = ''; $('#ok').checked = false; wLabels(); wGo(1);
+}
+$('#sBuy').onclick = () => { w.side = 'buy'; wLabels(); };
+$('#sSell').onclick = () => { w.side = 'sell'; wLabels(); };
+$('#plBin').onclick = () => { w.platform = 'binance'; w.dirty.uid = false; wLabels(); };
+$('#plByb').onclick = () => { w.platform = 'bybit'; w.dirty.uid = false; wLabels(); };
+$('#usd').oninput = wCalc;
+$('#qa').onclick = e => { const b = e.target.closest('[data-q]'); if (b) { $('#usd').value = b.dataset.q; wCalc(); } };
+$('#uid').oninput = () => w.dirty.uid = true;
+$('#payAcc').oninput = $('#payMethod').onchange = () => w.dirty.pay = true;
+$('#contact').oninput = () => w.dirty.contact = true;
+
+$('#n1').onclick = () => {
+  if (!cfg) return toast('ዋጋ እየተጫነ ነው፣ ትንሽ ቆይ።');
+  if (cfg.open !== '1') return toast('አገልግሎቱ ለጊዜው ተዘግቷል።');
+  const usd = parseFloat($('#usd').value);
+  if (!usd || usd < +cfg.min_usd || usd > +cfg.max_usd) return toast(`መጠኑ ከ ${cfg.min_usd} እስከ ${cfg.max_usd} USD መሆን አለበት።`);
+  wGo(2);
+};
+$('#b2').onclick = () => wGo(1);
+$('#n2').onclick = () => {
+  if (!$('#uid').value.trim()) return toast('UID ሙላ።');
+  if (!$('#payAcc').value.trim()) return toast('የክፍያ ስልክ ወይም ስም ሙላ።');
+  wGo(3);
+};
+$('#b3').onclick = () => wGo(2);
+$('#go').onclick = async () => {
+  if (!$('#ok').checked) return toast('መጀመሪያ መረጃዎቹን ማረጋገጥህን ምልክት አድርግ።');
+  const btn = $('#go'); btn.disabled = true; btn.textContent = 'እየላክን ነው…';
+  const f = { uid: $('#uid').value, method: $('#payMethod').value, acc: $('#payAcc').value, contact: $('#contact').value };
+  try {
+    const o = await api('/api/orders', { method: 'POST', body: JSON.stringify({
+      side: w.side, platform: w.platform, usd: parseFloat($('#usd').value),
+      user_uid: f.uid, contact: f.contact, pay_method: f.method, pay_account: f.acc }) });
+    if ($('#save').checked) {
+      try { user = await api('/api/me', { method: 'POST', body: JSON.stringify({ contact: f.contact, [w.platform + '_uid']: f.uid, pay_method: f.method, pay_account: f.acc }) }); } catch (e) {}
+    }
+    wReset(); openOrder(o);
+  } catch (err) { toast(err.message); }
+  btn.disabled = false; btn.textContent = 'ትዕዛዝ አስገባ';
 };
 
-function instructions(o) {
-  if (!cfg || !['pending', 'paid'].includes(o.status)) return '';
-  const copy = v => `<div class="copy"><code>${esc(v)}</code><button class="btn sec sm" type="button" data-copy="${esc(v)}">ኮፒ</button></div>`;
-  if (o.side === 'buy') {
-    return `<div class="todo"><b>1. ${fmt(o.etb)} ብር ላክ</b>
-      <div class="hint">Telebirr</div>${copy(cfg.telebirr)}
-      <div class="hint" style="margin-top:8px">CBE</div>${copy(cfg.cbe)}</div>`;
-  }
-  const uid = cfg[o.platform + '_uid'];
-  return `<div class="todo"><b>1. ${fmt(o.usd)} USD ወደዚህ ${esc(PLAT[o.platform])} UID ላክ</b>${copy(uid)}</div>`;
+/* ---------- ትዕዛዞች ---------- */
+async function loadOrders() {
+  const box = $('#olist');
+  if (!orders.length) box.innerHTML = '<div class="emptybox"><div class="spin"></div>እየጫነ ነው…</div>';
+  try { orders = (await api('/api/me/orders')).orders; } catch (e) { toast(e.message); }
+  box.innerHTML = orders.length ? orders.map(o => `
+    <button class="orow" data-id="${esc(o.id)}">
+      <div><b>${esc(o.id)}</b><small>${o.side === 'buy' ? 'USD ግዢ' : 'USD ሽያጭ'} • ${esc(PLAT[o.platform])} • ${esc(when(o.created))}</small></div>
+      <div class="r"><b>${fmt(o.usd)} USD</b><span class="state ${esc(o.status)}">${esc(STATE[o.status] || o.status)}</span></div>
+    </button>`).join('')
+    : '<div class="emptybox"><b>እስካሁን ትዕዛዝ የለህም</b><span>የመጀመሪያ ትዕዛዝህን ስጥ።</span><button class="btn" data-tab="xchg">ወደ ልውውጥ</button></div>';
 }
-function proofBox(o) {
-  if (!['pending', 'paid'].includes(o.status)) return '';
-  return `<div class="todo"><b>2. የክፍያ screenshot ጫን</b>
-    <div class="hint">${o.has_proof ? 'ማስረጃ ተልኳል። ለመቀየር እንደገና ጫን።' : 'ፎቶው ብቻ ነው የሚፈለገው።'}</div>
-    <div style="margin-top:10px"><input type="file" id="pf" accept="image/*"></div></div>`;
-}
-function showOrder(o) {
-  current = o;
-  $('#empty').classList.add('hide');
-  const r = $('#receipt'); r.classList.remove('hide');
-  r.innerHTML = `
-    <h3>ደረሰኝ</h3>
-    <div class="oid">${esc(o.id)}</div>
-    <span class="state ${esc(o.status)}">${esc(STATE[o.status] || o.status)}</span>
-    <div style="margin-top:14px">
-      <div class="kv"><span>አይነት</span><b>${o.side === 'buy' ? 'USD ግዢ' : 'USD ሽያጭ'} • ${esc(PLAT[o.platform])}</b></div>
-      <div class="kv"><span>መጠን</span><b>${fmt(o.usd)} USD</b></div>
-      <div class="kv"><span>ዋጋ</span><b>${fmt(o.rate)} ብር</b></div>
-      <div class="kv"><span>ጠቅላላ</span><b class="big">${fmt(o.etb)} ብር</b></div>
-    </div>
-    ${o.note ? `<div class="todo"><b>መልእክት:</b> ${esc(o.note)}</div>` : ''}
-    ${instructions(o)}${proofBox(o)}`;
-  r.querySelectorAll('[data-copy]').forEach(b => b.onclick = () => {
-    navigator.clipboard.writeText(b.dataset.copy).then(() => toast('ተቀድቷል ✓'));
-  });
-  const pf = r.querySelector('#pf'); if (pf) pf.onchange = () => sendProof(pf.files[0]);
-  clearInterval(timer);
-  if (['pending', 'paid'].includes(o.status)) timer = setInterval(refresh, 12000);
-}
-async function refresh() {
-  if (!current) return;
-  try { const o = await api('/api/orders/' + current.id); if (o.status !== current.status || o.note !== current.note) showOrder(o); } catch (e) {}
-}
+$('#olist').onclick = e => {
+  const b = e.target.closest('.orow'); if (!b) return;
+  const o = orders.find(x => x.id === b.dataset.id); if (o) openOrder(o);
+};
+$('#backBtn').onclick = () => tab('orders');
 
-/* ---------- proof upload (ፎቶውን አሳንሶ ይልካል) ---------- */
+function timeline(o) {
+  if (o.status === 'rejected' || o.status === 'cancelled') return `<div class="tl-bad">${esc(STATE[o.status])}</div>`;
+  const c = { pending: 1, paid: 2, completed: 4 }[o.status];
+  return '<ol class="tl">' + ['ትዕዛዝ ተቀብሏል', 'ክፍያ እና ማስረጃ', 'በማረጋገጥ ላይ', 'ተጠናቀቀ']
+    .map((t, i) => `<li class="${i < c ? 'done' : i === c ? 'now' : ''}">${t}</li>`).join('') + '</ol>';
+}
+function instructions(o) {
+  if (!cfg || !OPEN.includes(o.status)) return '';
+  const copy = v => `<div class="copy"><code>${esc(v)}</code><button class="btn sec sm" type="button" data-copy="${esc(v)}">ኮፒ</button></div>`;
+  if (o.status === 'pending' || o.status === 'paid') {
+    if (o.side === 'buy') return `<div class="todo"><b>1. ${fmt(o.etb)} ብር ላክ</b><div class="hint">Telebirr</div>${copy(cfg.telebirr)}<div class="hint" style="margin-top:8px">CBE</div>${copy(cfg.cbe)}</div>`;
+    return `<div class="todo"><b>1. ${fmt(o.usd)} USD ወደዚህ ${esc(PLAT[o.platform])} UID ላክ</b>${copy(cfg[o.platform + '_uid'])}</div>`;
+  }
+  return '';
+}
+function renderReceipt() {
+  const o = cur; if (!o) return;
+  const open = OPEN.includes(o.status);
+  $('#receipt').innerHTML = `
+    <div class="receipt">
+      <div class="hint">ደረሰኝ • ${esc(when(o.created))}</div>
+      <div class="oid">${esc(o.id)}</div>
+      <span class="state ${esc(o.status)}">${esc(STATE[o.status] || o.status)}</span>
+      ${timeline(o)}
+      <div style="margin-top:8px">
+        <div class="kv"><span>አይነት</span><b>${o.side === 'buy' ? 'USD ግዢ' : 'USD ሽያጭ'} • ${esc(PLAT[o.platform])}</b></div>
+        <div class="kv"><span>መጠን</span><b>${fmt(o.usd)} USD</b></div>
+        <div class="kv"><span>ዋጋ</span><b>${fmt(o.rate)} ብር</b></div>
+        <div class="kv"><span>${o.side === 'buy' ? 'የምትከፍለው' : 'የምታገኘው'}</span><b class="big">${fmt(o.etb)} ብር</b></div>
+        <div class="kv"><span>UID</span><b>${esc(o.user_uid)}</b></div>
+        <div class="kv"><span>${esc(o.pay_method)}</span><b>${esc(o.pay_account)}</b></div>
+      </div>
+      ${o.note ? `<div class="todo"><b>ከእኛ መልእክት:</b> ${esc(o.note)}</div>` : ''}
+      ${instructions(o)}
+      ${open ? `<div class="todo"><b>2. የክፍያ screenshot ጫን</b>
+        <div class="hint">${o.has_proof ? '✓ ማስረጃ ተልኳል። ለመቀየር እንደገና ጫን።' : 'ክፍያውን ከላክህ በኋላ የ screenshot ፎቶ ጫን።'}</div>
+        <div style="margin-top:10px"><label class="btn ${o.has_proof ? 'sec' : 'gold'} sm filebtn">📎 ፎቶ ምረጥ<input type="file" id="pf" accept="image/*"></label></div></div>` : ''}
+      ${o.status === 'pending' ? '<button class="btn sec sm" id="cancelBtn" type="button">ትዕዛዝ ሰርዝ</button>' : ''}
+    </div>`;
+  $$('#receipt [data-copy]').forEach(b => b.onclick = () => navigator.clipboard.writeText(b.dataset.copy).then(() => toast('ተቀድቷል ✓')));
+  const pf = $('#pf'); if (pf) pf.onchange = () => sendProof(pf.files[0]);
+  const cb = $('#cancelBtn'); if (cb) cb.onclick = cancelOrder;
+}
+function openOrder(o) {
+  cur = o; renderReceipt(); tab('order');
+  clearInterval(timer);
+  if (OPEN.includes(o.status)) timer = setInterval(refreshOrder, 12000);
+}
+async function refreshOrder() {
+  if (!cur || $('#t-order').classList.contains('hide')) return;
+  try {
+    const o = await api('/api/orders/' + encodeURIComponent(cur.id));
+    if (o.status !== cur.status || o.note !== cur.note) { cur = o; orders = orders.map(x => x.id === o.id ? o : x); renderReceipt(); if (!OPEN.includes(o.status)) clearInterval(timer); }
+  } catch (e) {}
+}
+async function cancelOrder() {
+  if (!confirm('ይህን ትዕዛዝ መሰረዝ ትፈልጋለህ?')) return;
+  try { cur = await api(`/api/orders/${encodeURIComponent(cur.id)}/cancel`, { method: 'POST' }); orders = []; renderReceipt(); toast('ትዕዛዙ ተሰርዟል።'); } catch (e) { toast(e.message); }
+}
 function shrink(file) {
   return new Promise((res, rej) => {
     const img = new Image(), fr = new FileReader();
@@ -246,27 +471,53 @@ function shrink(file) {
   });
 }
 async function sendProof(file) {
-  if (!file || !current) return;
+  if (!file || !cur) return;
   try {
     toast('እየተጫነ ነው…');
     const proof = await shrink(file);
-    const o = await api(`/api/orders/${current.id}/proof`, { method: 'POST', body: JSON.stringify({ proof }) });
-    showOrder(o); toast('ማስረጃ ተልኳል ✓');
+    cur = await api(`/api/orders/${encodeURIComponent(cur.id)}/proof`, { method: 'POST', body: JSON.stringify({ proof }) });
+    orders = []; renderReceipt(); toast('ማስረጃ ተልኳል ✓');
+    clearInterval(timer); timer = setInterval(refreshOrder, 12000);
   } catch (e) { toast(e.message || 'ፎቶውን መጫን አልተቻለም።'); }
 }
 
-/* ---------- track ---------- */
-async function track(id) {
-  id = (id || '').trim().toUpperCase(); if (!id) return;
-  try { showOrder(await api('/api/orders/' + encodeURIComponent(id))); $('#side').scrollIntoView({ behavior: 'smooth' }); }
-  catch (e) { toast(e.message); }
+/* ---------- መገለጫ ---------- */
+function fillProfile() {
+  $('#pName').textContent = user.name; $('#pPhone').textContent = user.phone;
+  $('#fContact').value = user.contact || ''; $('#fBin').value = user.binance_uid || ''; $('#fByb').value = user.bybit_uid || '';
+  $('#fMethod').value = METHODS.includes(user.pay_method) ? user.pay_method : METHODS[0];
+  $('#fAcc').value = user.pay_account || '';
 }
-$('#tbtn').onclick = () => track($('#tid').value);
-$('#tid').onkeydown = e => { if (e.key === 'Enter') track(e.target.value); };
+$('#pform').onsubmit = async e => {
+  e.preventDefault();
+  try {
+    user = await api('/api/me', { method: 'POST', body: JSON.stringify({ contact: $('#fContact').value, binance_uid: $('#fBin').value, bybit_uid: $('#fByb').value, pay_method: $('#fMethod').value, pay_account: $('#fAcc').value }) });
+    toast('ተቀምጧል ✓');
+  } catch (err) { toast(err.message); }
+};
+$('#pwForm').onsubmit = async e => {
+  e.preventDefault();
+  try {
+    await api('/api/me/password', { method: 'POST', body: JSON.stringify({ old: $('#pw1').value, new: $('#pw2').value }) });
+    $('#pw1').value = $('#pw2').value = ''; toast('Password ተቀይሯል ✓');
+  } catch (err) { toast(err.message); }
+};
 
-$('#siteName').textContent = window.SITE_NAME || 'P2P';
-const last = localStorage.getItem('p2p_last'); if (last) $('#tid').value = last;
+/* ---------- ጅምር ---------- */
+async function boot(tries = 0) {
+  if (!token) return view('landing');
+  view('load');
+  try { user = await api('/api/me'); enter(); }
+  catch (e) {
+    if (!token) return view('landing');
+    if (tries < 14) { $('#loadTxt').textContent = 'ሰርቨሩ እየነቃ ነው… (እስከ 50 ሰከንድ)'; setTimeout(() => boot(tries + 1), 4000); }
+    else { view('landing'); toast('ከሰርቨር ጋር መገናኘት አልተቻለም።'); }
+  }
+}
+$('#siteName').textContent = window.SITE_NAME || 'P2P ብር';
+authMode('login');
 loadConfig();
+boot();
 </script>
 </body>
 </html>
