@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="referrer" content="no-referrer">
-<meta name="theme-color" content="#123628">
+<meta name="theme-color" content="#061D15">
 <title>P2P ብር ⇄ USD</title>
 <meta name="description" content="Binance እና Bybit UID በመጠቀም USD ግዛ ወይም ሽጥ።">
 <link rel="stylesheet" href="style.css">
@@ -21,7 +21,10 @@
     <button data-tab="orders">ትዕዛዞቼ</button>
     <button data-tab="me">መገለጫ</button>
   </nav>
-  <div class="who" id="who"></div>
+  <div class="header-right">
+    <button type="button" class="theme-pill" id="themeToggleBtn" title="3D Light / Dark ቀይር">🌙 3D</button>
+    <div class="who" id="who"></div>
+  </div>
 </div></header>
 
 <!-- መጫኛ -->
@@ -39,24 +42,24 @@
         <button class="btn sec lg" data-auth="login">Login</button>
       </div>
     </div>
-    <div class="board" aria-label="የዛሬ ዋጋ">
+    <div class="board tilt-3d" aria-label="የዛሬ ዋጋ">
       <div class="row"><div class="what"><b>USD ግዛ</b>አንተ ብር ትከፍላለህ</div><div class="num"><span id="rBuy">—</span><small>ብር / 1 USD</small></div></div>
       <div class="row"><div class="what"><b>USD ሽጥ</b>አንተ ብር ትቀበላለህ</div><div class="num"><span id="rSell">—</span><small>ብር / 1 USD</small></div></div>
       <div class="foot" id="liveTxt">ከሰርቨር ጋር እየተገናኘ ነው…</div>
     </div>
   </section>
   <ul class="wrap feat">
-    <li><b>ዋጋው ቅድሚያ ይታያል</b><span>ከመላክህ በፊት የምትከፍለው ወይም የምታገኘው ብር በትክክል ይታያል።</span></li>
-    <li><b>ትዕዛዝህን ትከታተላለህ</b><span>ከመቀበል እስከ መጠናቀቅ ያለውን ሂደት በደረጃ ታያለህ።</span></li>
-    <li><b>መረጃህ ይቀመጣል</b><span>UID እና የክፍያ አካውንትህን አንዴ አስቀምጥ፣ በሚቀጥለው ጊዜ በራሱ ይሞላል።</span></li>
+    <li class="tilt-3d"><b>ዋጋው ቅድሚያ ይታያል</b><span>ከመላክህ በፊት የምትከፍለው ወይም የምታገኘው ብር በትክክል ይታያል።</span></li>
+    <li class="tilt-3d"><b>ትዕዛዝህን ትከታተላለህ</b><span>ከመቀበል እስከ መጠናቀቅ ያለውን ሂደት በደረጃ ታያለህ።</span></li>
+    <li class="tilt-3d"><b>መረጃህ ይቀመጣል</b><span>UID እና የክፍያ አካውንትህን አንዴ አስቀምጥ፣ በሚቀጥለው ጊዜ በራሱ ይሞላል።</span></li>
   </ul>
   <section class="wrap sect">
     <h2>እንዴት ይሰራል</h2>
     <ol class="how">
-      <li><b>መለያ ክፈት</b>ስም፣ ስልክ እና password ብቻ።</li>
-      <li><b>መጠን ምረጥ</b>USD መግዛት ወይም መሸጥ፣ Binance ወይም Bybit።</li>
-      <li><b>ላክ እና ማስረጃ ጫን</b>ወደተሰጠህ አካውንት ላክ፣ screenshot ጫን።</li>
-      <li><b>ተጠናቀቀ</b>ስንረጋግጥ ትዕዛዝህ "ተጠናቀቀ" ይላል።</li>
+      <li class="tilt-3d"><b>መለያ ክፈት</b>ስም፣ ስልክ እና password ብቻ።</li>
+      <li class="tilt-3d"><b>መጠን ምረጥ</b>USD መግዛት ወይም መሸጥ፣ Binance ወይም Bybit።</li>
+      <li class="tilt-3d"><b>ላክ እና ማስረጃ ጫን</b>ወደተሰጠህ አካውንት ላክ፣ screenshot ጫን።</li>
+      <li class="tilt-3d"><b>ተጠናቀቀ</b>ስንረጋግጥ ትዕዛዝህ "ተጠናቀቀ" ይላል።</li>
     </ol>
   </section>
   <footer class="wrap foot2"><span id="tg"></span><div style="margin-top:6px">ከመላክህ በፊት UID እና መጠኑን ደግመህ አረጋግጥ። የተላከ ገንዘብ ሊመለስ አይችልም።</div></footer>
@@ -64,7 +67,7 @@
 
 <!-- መግቢያ -->
 <main id="v-auth" class="hide"><div class="wrap narrow">
-  <div class="authcard">
+  <div class="authcard tilt-3d">
     <h1 id="aTitle">እንኳን ደህና መጣህ</h1>
     <div class="seg" role="group" aria-label="ግባ ወይም ተመዝገብ">
       <button type="button" id="aLogin" aria-pressed="true">Login</button>
@@ -92,7 +95,7 @@
     <div class="layout">
       <div>
         <!-- ደረጃ 1 -->
-        <div class="wz" data-s="1" style="display:grid;gap:16px">
+        <div class="wz tilt-3d" data-s="1" style="display:grid;gap:16px">
           <div class="seg" role="group" aria-label="አይነት"><button type="button" id="sBuy" aria-pressed="true">USD ግዛ</button><button type="button" id="sSell" aria-pressed="false">USD ሽጥ</button></div>
           <div class="seg" role="group" aria-label="መድረክ"><button type="button" id="plBin" aria-pressed="true">Binance</button><button type="button" id="plByb" aria-pressed="false">Bybit</button></div>
           <div class="calc">
@@ -107,7 +110,7 @@
         </div>
 
         <!-- ደረጃ 2 -->
-        <div class="wz panel hide" data-s="2">
+        <div class="wz panel tilt-3d hide" data-s="2">
           <h3>መረጃዎችህ</h3>
           <div class="field"><label for="uid" id="uidL">Binance UID</label><input id="uid" inputmode="numeric" maxlength="60" placeholder="ለምሳሌ 123456789"></div>
           <div class="row2">
@@ -119,7 +122,7 @@
         </div>
 
         <!-- ደረጃ 3 -->
-        <div class="wz panel hide" data-s="3">
+        <div class="wz panel tilt-3d hide" data-s="3">
           <h3>ትዕዛዝህን አረጋግጥ</h3>
           <div class="sum" id="sum"></div>
           <label class="check"><input type="checkbox" id="ok"><span>UID፣ መጠኑ እና የክፍያ መረጃዬ ትክክል መሆኑን አረጋግጫለሁ።</span></label>
@@ -128,7 +131,7 @@
         </div>
       </div>
       <aside class="side">
-        <div class="board">
+        <div class="board tilt-3d">
           <div class="row"><div class="what"><b>USD ግዛ</b></div><div class="num"><span id="sBuyR">—</span><small>ብር</small></div></div>
           <div class="row"><div class="what"><b>USD ሽጥ</b></div><div class="num"><span id="sSellR">—</span><small>ብር</small></div></div>
         </div>
@@ -147,7 +150,7 @@
   <section id="t-me" class="hide">
     <h2>መገለጫ</h2>
     <div class="layout">
-      <form class="panel" id="pform">
+      <form class="panel tilt-3d" id="pform">
         <div class="kv" style="display:flex;justify-content:space-between"><span>ስም</span><b id="pName"></b></div>
         <div class="kv" style="display:flex;justify-content:space-between"><span>ስልክ</span><b id="pPhone"></b></div>
         <div class="field"><label for="fContact">Telegram username</label><input id="fContact" maxlength="80" placeholder="@username"></div>
@@ -162,7 +165,7 @@
         <button class="btn" type="submit">መረጃዬን አስቀምጥ</button>
       </form>
       <div class="side">
-        <form class="panel" id="pwForm">
+        <form class="panel tilt-3d" id="pwForm">
           <h3>Password ቀይር</h3>
           <div class="field"><label for="pw1">የአሁኑ</label><input id="pw1" type="password" autocomplete="current-password"></div>
           <div class="field"><label for="pw2">አዲስ (ቢያንስ 6 ቁምፊ)</label><input id="pw2" type="password" autocomplete="new-password"></div>
@@ -215,6 +218,19 @@ async function api(path, opts = {}) {
   if (!r.ok) throw new Error(d.error || 'ስህተት ተፈጥሯል።');
   return d;
 }
+
+/* ---------- 3D Theme Toggle ---------- */
+try {
+  if (localStorage.getItem('p2p_theme') === 'dark') {
+    document.body.classList.add('dark-3d');
+    $('#themeToggleBtn').textContent = '☀️ 3D';
+  }
+} catch (e) {}
+$('#themeToggleBtn').onclick = () => {
+  const isDark = document.body.classList.toggle('dark-3d');
+  try { localStorage.setItem('p2p_theme', isDark ? 'dark' : 'light'); } catch (e) {}
+  $('#themeToggleBtn').textContent = isDark ? '☀️ 3D' : '🌙 3D';
+};
 
 /* ---------- ገጾች ---------- */
 function view(v) {
@@ -384,7 +400,7 @@ async function loadOrders() {
   if (!orders.length) box.innerHTML = '<div class="emptybox"><div class="spin"></div>እየጫነ ነው…</div>';
   try { orders = (await api('/api/me/orders')).orders; } catch (e) { toast(e.message); }
   box.innerHTML = orders.length ? orders.map(o => `
-    <button class="orow" data-id="${esc(o.id)}">
+    <button class="orow tilt-3d" data-id="${esc(o.id)}">
       <div><b>${esc(o.id)}</b><small>${o.side === 'buy' ? 'USD ግዢ' : 'USD ሽያጭ'} • ${esc(PLAT[o.platform])} • ${esc(when(o.created))}</small></div>
       <div class="r"><b>${fmt(o.usd)} USD</b><span class="state ${esc(o.status)}">${esc(STATE[o.status] || o.status)}</span></div>
     </button>`).join('')
@@ -415,7 +431,7 @@ function renderReceipt() {
   const o = cur; if (!o) return;
   const open = OPEN.includes(o.status);
   $('#receipt').innerHTML = `
-    <div class="receipt">
+    <div class="receipt tilt-3d">
       <div class="hint">ደረሰኝ • ${esc(when(o.created))}</div>
       <div class="oid">${esc(o.id)}</div>
       <span class="state ${esc(o.status)}">${esc(STATE[o.status] || o.status)}</span>
@@ -502,6 +518,43 @@ $('#pwForm').onsubmit = async e => {
     $('#pw1').value = $('#pw2').value = ''; toast('Password ተቀይሯል ✓');
   } catch (err) { toast(err.message); }
 };
+
+/* ---------- Interactive 3D Perspective Tilt & Tactile Ripple Engine ---------- */
+document.addEventListener('pointermove', e => {
+  const card = e.target.closest('.tilt-3d, .board, .feat li, .how li');
+  if (!card) return;
+  const rect = card.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+  const maxTilt = card.classList.contains('wz') || card.classList.contains('receipt') ? 2.5 : 5.5;
+  const ry = ((x / rect.width) - 0.5) * maxTilt * 2;
+  const rx = (0.5 - (y / rect.height)) * maxTilt * 2;
+  card.style.setProperty('--rx', `${rx.toFixed(2)}deg`);
+  card.style.setProperty('--ry', `${ry.toFixed(2)}deg`);
+  card.style.setProperty('--gx', `${((x / rect.width) * 100).toFixed(1)}%`);
+  card.style.setProperty('--gy', `${((y / rect.height) * 100).toFixed(1)}%`);
+});
+
+document.addEventListener('pointerout', e => {
+  const card = e.target.closest('.tilt-3d, .board, .feat li, .how li');
+  if (!card || card.contains(e.relatedTarget)) return;
+  card.style.setProperty('--rx', '0deg');
+  card.style.setProperty('--ry', '0deg');
+});
+
+document.addEventListener('pointerdown', e => {
+  const btn = e.target.closest('button, .btn');
+  if (!btn) return;
+  const rect = btn.getBoundingClientRect();
+  const ripple = document.createElement('span');
+  const size = Math.max(rect.width, rect.height);
+  ripple.className = 'ripple-wave';
+  ripple.style.width = ripple.style.height = `${size}px`;
+  ripple.style.left = `${e.clientX - rect.left - size / 2}px`;
+  ripple.style.top = `${e.clientY - rect.top - size / 2}px`;
+  btn.appendChild(ripple);
+  setTimeout(() => ripple.remove(), 600);
+});
 
 /* ---------- ጅምር ---------- */
 async function boot(tries = 0) {
