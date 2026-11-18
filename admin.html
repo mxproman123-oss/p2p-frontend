@@ -9,30 +9,63 @@
 <link rel="stylesheet" href="style.css">
 <script src="config.js"></script>
 </head>
-<body class="adm">
+<body class="adm dark-3d">
 <div class="flag"></div>
 
-<form id="login" class="login">
-  <h1>Admin</h1>
+<form id="login" class="login tilt-3d">
+  <div class="login-head">
+    <div class="stamp">ብ</div>
+    <div>
+      <h1>Admin</h1>
+      <div class="login-sub">3D P2P Exchange አስተዳደር</div>
+    </div>
+  </div>
   <div class="field"><label for="pw">Password</label><input id="pw" type="password" autocomplete="current-password" required></div>
   <button class="btn block" type="submit">ግባ</button>
 </form>
 
 <div id="app" class="hide">
   <header class="top"><div class="wrap in">
-    <div class="logo"><span class="stamp">ብ</span>Admin</div>
+    <div class="logo">
+      <span class="stamp">ብ</span>
+      <div class="logo-meta">
+        <span>Admin</span>
+        <small>3D Live Control</small>
+      </div>
+    </div>
     <nav class="navtabs" id="navtabs">
-      <button data-v="dash">ዳሽቦርድ</button>
-      <button data-v="orders">ትዕዛዞች</button>
-      <button data-v="users">ተጠቃሚዎች</button>
-      <button data-v="settings">ቅንብሮች</button>
+      <button data-v="dash">📊 ዳሽቦርድ</button>
+      <button data-v="orders">⚡ ትዕዛዞች</button>
+      <button data-v="users">👥 ተጠቃሚዎች</button>
+      <button data-v="settings">⚙️ ቅንብሮች</button>
     </nav>
-    <button class="btn sec sm" id="out" style="color:#fff;border-color:#fff">ውጣ</button>
+    <div class="top-actions">
+      <button class="icon-pill" type="button" id="themeBtn" title="3D Light / Dark ቀይር">☀️ ብርሃን</button>
+      <button class="btn sec sm" id="out" type="button" style="color:#fff;border-color:#fff">ውጣ</button>
+    </div>
   </div></header>
 
   <main class="wrap page">
     <!-- ዳሽቦርድ -->
-    <section id="v-dash">
+    <section id="v-dash" class="view-anim">
+      <div class="dash-hero tilt-3d">
+        <div class="dash-hero-title">
+          <span class="live-orb"></span>
+          <div>
+            <h2>የቀጥታ P2P ልውውጥ መቆጣጠሪያ</h2>
+            <p id="heroAnnouncement">ሁሉም የክፍያ ማረጋገጫዎች እና ትዕዛዞች በቅጽበት ይዘምናሉ</p>
+          </div>
+        </div>
+        <div class="rate-pills">
+          <div class="rate-pill">
+            <div><small>USD መግዣ (Buy)</small><br><b id="heroBuyRate">—</b></div>
+          </div>
+          <div class="rate-pill">
+            <div><small>USD መሸጫ (Sell)</small><br><b id="heroSellRate">—</b></div>
+          </div>
+        </div>
+      </div>
+
       <div class="stats" id="stats"></div>
       <div class="dash2">
         <div><h3>ለማረጋገጥ የሚጠብቁ</h3><div class="mini" id="needs"></div></div>
@@ -41,7 +74,7 @@
     </section>
 
     <!-- ትዕዛዞች -->
-    <section id="v-orders" class="hide">
+    <section id="v-orders" class="hide view-anim">
       <div class="tools">
         <input type="search" id="q" placeholder="ፈልግ: ቁጥር፣ ስም፣ ስልክ፣ UID" aria-label="ፈልግ">
       </div>
@@ -57,13 +90,13 @@
     </section>
 
     <!-- ተጠቃሚዎች -->
-    <section id="v-users" class="hide">
+    <section id="v-users" class="hide view-anim">
       <div class="tools"><input type="search" id="uq" placeholder="ፈልግ: ስም ወይም ስልክ" aria-label="ተጠቃሚ ፈልግ"></div>
       <div id="ulist" class="ords"></div>
     </section>
 
     <!-- ቅንብሮች -->
-    <section id="v-settings" class="hide"><form id="settings" class="setgrid"></form></section>
+    <section id="v-settings" class="hide view-anim"><form id="settings" class="setgrid"></form></section>
   </main>
 
   <nav class="tabbar" id="tabbar" style="--n:4">
@@ -114,6 +147,11 @@ $('#login').onsubmit = async e => {
 };
 $('#out').onclick = logout;
 
+$('#themeBtn').onclick = () => {
+  const isDark = document.body.classList.toggle('dark-3d');
+  $('#themeBtn').textContent = isDark ? '☀️ ብርሃን' : '🌙 ጨለማ';
+};
+
 function go(name) {
   v = name;
   ['dash', 'orders', 'users', 'settings'].forEach(x => $('#v-' + x).classList.toggle('hide', x !== name));
@@ -130,16 +168,19 @@ async function load() {
 
 /* ---------- ዳሽቦርድ ---------- */
 function orow(o) {
-  return `<button class="orow" data-goto="${esc(o.id)}"><div><b>${esc(o.id)}</b><small>${esc(o.user_name || '—')} • ${o.side === 'buy' ? 'ግዢ' : 'ሽያጭ'} • ${esc(o.platform)}</small></div>
+  return `<button class="orow tilt-3d" data-goto="${esc(o.id)}"><div><b>${esc(o.id)}</b><small>${esc(o.user_name || '—')} • ${o.side === 'buy' ? 'ግዢ' : 'ሽያጭ'} • ${esc(o.platform)}</small></div>
     <div class="r"><b>${fmt(o.usd)} USD</b><span class="state ${esc(o.status)}">${esc(STATE[o.status] || o.status)}</span></div></button>`;
 }
 function renderDash() {
   const s = stats;
   $('#stats').innerHTML = [
-    ['ለማረጋገጥ', s.paid, 'var(--saffron)'], ['በመጠበቅ ላይ', s.pending, 'var(--sky)'],
-    ['የተጠናቀቁ', s.completed, 'var(--forest)'], ['ተጠቃሚዎች', s.users, 'var(--ink)'],
-    ['ጠቅላላ USD', fmt(s.volume_usd), 'var(--forest)'], ['ጠቅላላ ብር', fmt(s.volume_etb), 'var(--saffron)'],
-  ].map(([l, n, c]) => `<div class="stat" style="--c:${c}"><b>${esc(n)}</b><span>${esc(l)}</span></div>`).join('');
+    ['ለማረጋገጥ', s.paid, 'var(--saffron)', '⚡'],
+    ['በመጠበቅ ላይ', s.pending, 'var(--sky)', '⏳'],
+    ['የተጠናቀቁ', s.completed, 'var(--forest)', '✅'],
+    ['ተጠቃሚዎች', s.users, 'var(--green)', '👥'],
+    ['ጠቅላላ USD', fmt(s.volume_usd), 'var(--forest)', '💵'],
+    ['ጠቅላላ ብር', fmt(s.volume_etb), 'var(--saffron)', '🏦'],
+  ].map(([l, n, c, ic]) => `<div class="stat tilt-3d" style="--c:${c}"><div class="stat-info"><b>${esc(n)}</b><span>${esc(l)}</span></div><div class="stat-cube">${ic}</div></div>`).join('');
   const need = orders.filter(o => o.status === 'paid');
   $('#needs').innerHTML = need.length ? need.slice(0, 6).map(orow).join('') : '<div class="emptybox">ለማረጋገጥ የሚጠብቅ ትዕዛዝ የለም ✓</div>';
   $('#recent').innerHTML = orders.length ? orders.slice(0, 6).map(orow).join('') : '<div class="emptybox">እስካሁን ትዕዛዝ የለም።</div>';
@@ -158,7 +199,7 @@ function renderOrders() {
   if (q) list = list.filter(o => [o.id, o.user_name, o.user_phone, o.user_uid, o.contact, o.pay_account].join(' ').toLowerCase().includes(q));
   if (!list.length) { box.innerHTML = '<div class="emptybox">በዚህ ምድብ ትዕዛዝ የለም።</div>'; return; }
   box.innerHTML = list.map(o => `
-    <article class="ord ${o.status === 'paid' ? 'hot' : ''}" data-id="${esc(o.id)}">
+    <article class="ord tilt-3d ${o.status === 'paid' ? 'hot' : ''}" data-id="${esc(o.id)}">
       <div class="top2"><b>${esc(o.id)}</b><span class="state ${esc(o.status)}">${esc(STATE[o.status] || o.status)}</span></div>
       <div>
         <div class="kv"><span>ተጠቃሚ</span><b>${esc(o.user_name || '—')} • ${esc(o.user_phone)}</b></div>
@@ -203,7 +244,7 @@ function renderUsers() {
   const q = $('#uq').value.trim().toLowerCase();
   const list = users.filter(u => !q || (u.name + ' ' + u.phone).toLowerCase().includes(q));
   $('#ulist').innerHTML = list.length ? list.map(u => `
-    <article class="ord" data-uid="${u.id}">
+    <article class="ord tilt-3d" data-uid="${u.id}">
       <div class="top2"><b>${esc(u.name)}</b>${u.banned ? '<span class="state rejected">ታግዷል</span>' : ''}</div>
       <div>
         <div class="kv"><span>ስልክ</span><b>${esc(u.phone)}</b></div>
@@ -238,6 +279,9 @@ $('#ulist').onclick = async e => {
 async function loadSettings() {
   try {
     const s = await (await fetch(window.API_URL + '/api/config')).json();
+    if ($('#heroBuyRate')) $('#heroBuyRate').textContent = fmt(s.buy_rate) + ' ብር';
+    if ($('#heroSellRate')) $('#heroSellRate').textContent = fmt(s.sell_rate) + ' ብር';
+    if ($('#heroAnnouncement') && s.announcement) $('#heroAnnouncement').textContent = s.announcement;
     $('#settings').innerHTML = SECTIONS.map(([h, fields]) => `<h3>${esc(h)}</h3>` + fields.map(([k, l, t, cls]) =>
       `<div class="field ${cls || ''}"><label>${esc(l)}</label><input name="${k}" type="${t}" step="any" value="${esc(s[k])}"></div>`).join('')).join('') +
       `<h3>አገልግሎት</h3><div class="field"><label>ሁኔታ</label><select name="open"><option value="1" ${s.open === '1' ? 'selected' : ''}>ክፍት</option><option value="0" ${s.open !== '1' ? 'selected' : ''}>ዝግ</option></select></div>
@@ -246,9 +290,50 @@ async function loadSettings() {
 }
 $('#settings').onsubmit = async e => {
   e.preventDefault();
-  try { await api('/api/admin/settings', { method: 'POST', body: JSON.stringify(Object.fromEntries(new FormData(e.target).entries())) }); toast('ቅንብር ተቀምጧል ✓'); }
+  try {
+    await api('/api/admin/settings', { method: 'POST', body: JSON.stringify(Object.fromEntries(new FormData(e.target).entries())) });
+    toast('ቅንብር ተቀምጧል ✓');
+    loadSettings();
+  }
   catch (err) { toast(err.message); }
 };
+
+/* ---------- Interactive 3D Tilt & Tactile Ripple Engine ---------- */
+document.addEventListener('pointermove', e => {
+  const card = e.target.closest('.tilt-3d');
+  if (!card) return;
+  const rect = card.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+  const maxTilt = card.classList.contains('ord') ? 4 : 6.5;
+  const ry = ((x / rect.width) - 0.5) * maxTilt * 2;
+  const rx = (0.5 - (y / rect.height)) * maxTilt * 2;
+  card.style.setProperty('--rx', `${rx.toFixed(2)}deg`);
+  card.style.setProperty('--ry', `${ry.toFixed(2)}deg`);
+  card.style.setProperty('--gx', `${((x / rect.width) * 100).toFixed(1)}%`);
+  card.style.setProperty('--gy', `${((y / rect.height) * 100).toFixed(1)}%`);
+});
+
+document.addEventListener('pointerout', e => {
+  const card = e.target.closest('.tilt-3d');
+  if (!card || card.contains(e.relatedTarget)) return;
+  card.style.setProperty('--rx', '0deg');
+  card.style.setProperty('--ry', '0deg');
+});
+
+document.addEventListener('pointerdown', e => {
+  const btn = e.target.closest('button, .btn, .chip');
+  if (!btn) return;
+  const rect = btn.getBoundingClientRect();
+  const ripple = document.createElement('span');
+  const size = Math.max(rect.width, rect.height);
+  ripple.className = 'ripple-wave';
+  ripple.style.width = ripple.style.height = `${size}px`;
+  ripple.style.left = `${e.clientX - rect.left - size / 2}px`;
+  ripple.style.top = `${e.clientY - rect.top - size / 2}px`;
+  btn.appendChild(ripple);
+  setTimeout(() => ripple.remove(), 600);
+});
 
 if (token) enter();
 </script>
